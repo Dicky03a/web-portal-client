@@ -35,13 +35,23 @@ The DB Design document uses Laravel column types. Here's the exact Drizzle mappi
 
 Drizzle cannot define triggers in its schema DSL. These triggers from the DB Design MUST be in SQL migration files:
 
+> **Update (schema review, migration 0005):** the original freeze body only
+> compared content fields, so `UPDATE ... SET sent_at = NULL` bypassed it and a
+> second UPDATE could then edit frozen content. The hardened body below blocks
+> ANY field change once `sent_at` is set (including clearing `sent_at`), and two
+> companion triggers block deleting a frozen version and mutating its items.
+
 ```sql
--- Trigger 1: Freeze document versions after sent_at is set
+-- Trigger 1: Freeze document versions after sent_at is set (hardened)
 CREATE OR REPLACE FUNCTION fn_freeze_document_version()
 RETURNS TRIGGER AS $$
 BEGIN
   IF OLD.sent_at IS NOT NULL THEN
-    IF NEW.content_snapshot IS DISTINCT FROM OLD.content_snapshot
+    IF NEW.sent_at IS DISTINCT FROM OLD.sent_at
+       OR NEW.document_id IS DISTINCT FROM OLD.document_id
+       OR NEW.version_number IS DISTINCT FROM OLD.version_number
+       OR NEW.created_by_user_id IS DISTINCT FROM OLD.created_by_user_id
+       OR NEW.content_snapshot IS DISTINCT FROM OLD.content_snapshot
        OR NEW.content_hash IS DISTINCT FROM OLD.content_hash
        OR NEW.rendered_pdf_path IS DISTINCT FROM OLD.rendered_pdf_path THEN
       RAISE EXCEPTION 'Cannot modify frozen document version (sent_at is set)';
@@ -54,6 +64,39 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER trg_freeze_document_version
 BEFORE UPDATE ON document_versions
 FOR EACH ROW EXECUTE FUNCTION fn_freeze_document_version();
+
+-- Trigger 1b: Block deleting a frozen version (preserves approval audit trail).
+CREATE OR REPLACE FUNCTION fn_block_frozen_version_delete()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF OLD.sent_at IS NOT NULL THEN
+    RAISE EXCEPTION 'Cannot delete frozen document version (sent_at is set)';
+  END IF;
+  RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_block_frozen_version_delete
+BEFORE DELETE ON document_versions
+FOR EACH ROW EXECUTE FUNCTION fn_block_frozen_version_delete();
+
+-- Trigger 1c: Items of a frozen version are immutable.
+CREATE OR REPLACE FUNCTION fn_freeze_version_items()
+RETURNS TRIGGER AS $$
+DECLARE v_sent timestamptz;
+BEGIN
+  SELECT sent_at INTO v_sent FROM document_versions
+   WHERE id = COALESCE(NEW.document_version_id, OLD.document_version_id);
+  IF v_sent IS NOT NULL THEN
+    RAISE EXCEPTION 'Cannot modify items of frozen document version';
+  END IF;
+  RETURN COALESCE(NEW, OLD);
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_freeze_version_items
+BEFORE INSERT OR UPDATE OR DELETE ON document_version_items
+FOR EACH ROW EXECUTE FUNCTION fn_freeze_version_items();
 
 -- Trigger 2: Protect activity logs (append-only)
 CREATE OR REPLACE FUNCTION fn_protect_activity_logs()

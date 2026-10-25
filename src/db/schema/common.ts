@@ -17,6 +17,7 @@ import {
   jsonb,
   pgTable,
   timestamp,
+  uniqueIndex,
   varchar,
 } from 'drizzle-orm/pg-core';
 
@@ -38,10 +39,18 @@ export const files = pgTable(
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true })
       .notNull()
-      .default(sql`now()`),
+      .defaultNow()
+      .$onUpdate(() => new Date()),
   },
   (t) => [
-    check('files_size_bytes_check', sql`${t.sizeBytes} >= 0`),
+    // Max 5 MB per implementation-notes §10.
+    check('files_size_bytes_check', sql`${t.sizeBytes} BETWEEN 1 AND 5242880`),
+    check(
+      'files_mime_type_check',
+      sql`${t.mimeType} IN ('image/jpeg', 'image/png', 'image/webp', 'application/pdf')`,
+    ),
+    check('files_uploaded_by_check', sql`${t.uploadedBy} IN ('admin', 'client', 'system')`),
+    uniqueIndex('uq_files_storage_path').on(t.storagePath),
     index('idx_files_project_id').on(t.projectId),
   ],
 );
@@ -50,8 +59,10 @@ export const activityLogs = pgTable(
   'activity_logs',
   {
     id: bigserial('id', { mode: 'number' }).primaryKey(),
+    // RESTRICT: SET NULL would be an UPDATE, which the append-only trigger
+    // rejects — breaking any project delete that has logs.
     projectId: bigint('project_id', { mode: 'number' }).references(() => projects.id, {
-      onDelete: 'set null',
+      onDelete: 'restrict',
     }),
     actorType: varchar('actor_type', { length: 20 }).notNull(),
     actorId: bigint('actor_id', { mode: 'number' }),
@@ -64,6 +75,11 @@ export const activityLogs = pgTable(
   },
   (t) => [
     check('activity_logs_actor_type_check', sql`${t.actorType} IN ('admin', 'client', 'system')`),
-    index('idx_activity_logs_project_id').on(t.projectId),
+    check(
+      'activity_logs_system_actor_check',
+      sql`${t.actorType} <> 'system' OR ${t.actorId} IS NULL`,
+    ),
+    index('idx_activity_logs_project_created').on(t.projectId, t.createdAt.desc()),
+    index('idx_activity_logs_entity').on(t.entityType, t.entityId),
   ],
 );

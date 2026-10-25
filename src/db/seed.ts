@@ -461,6 +461,8 @@ async function main() {
     });
     const hash = sha256(snapshot);
 
+    // Insert the version UNSENT, add items, then set sent_at — otherwise the
+    // fn_freeze_version_items trigger rejects inserting items into a sent version.
     const [ver] = await db
       .insert(documentVersions)
       .values(
@@ -469,7 +471,7 @@ async function main() {
           versionNumber: q.version,
           contentSnapshot: snapshot,
           contentHash: hash,
-          sentAt: q.sentAt ? d(q.sentAt) : null,
+          sentAt: null,
           createdByUserId: adminId,
         }),
       )
@@ -494,6 +496,13 @@ async function main() {
       );
     }
 
+    if (q.sentAt) {
+      await db
+        .update(documentVersions)
+        .set({ sentAt: d(q.sentAt) })
+        .where(eq(documentVersions.id, verId));
+    }
+
     if (q.decision) {
       await db.insert(documentDecisions).values(
         makeDocumentDecision({
@@ -502,6 +511,7 @@ async function main() {
           decidedByName: q.clientName,
           clientHash: hash,
           ipAddress: '103.0.0.1',
+          userAgent: 'Mozilla/5.0 (seed)',
           createdAt: q.decidedAt ? d(q.decidedAt) : undefined,
         }),
       );

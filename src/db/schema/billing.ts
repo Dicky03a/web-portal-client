@@ -34,7 +34,7 @@ export const installments = pgTable(
     id: bigserial('id', { mode: 'number' }).primaryKey(),
     projectId: bigint('project_id', { mode: 'number' })
       .notNull()
-      .references(() => projects.id, { onDelete: 'cascade' }),
+      .references(() => projects.id, { onDelete: 'restrict' }),
     installmentNumber: smallint('installment_number').notNull(),
     label: varchar('label', { length: 100 }).notNull(),
     percentageBasisPoints: smallint('percentage_basis_points').notNull(),
@@ -44,15 +44,17 @@ export const installments = pgTable(
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true })
       .notNull()
-      .default(sql`now()`),
+      .defaultNow()
+      .$onUpdate(() => new Date()),
   },
   (t) => [
     check(
       'installments_basis_points_check',
       sql`${t.percentageBasisPoints} >= 0 AND ${t.percentageBasisPoints} <= 10000`,
     ),
-    check('installments_amount_check', sql`${t.amount} >= 0`),
-    index('idx_installments_project_id').on(t.projectId),
+    check('installments_amount_check', sql`${t.amount} > 0`),
+    // Covers the project_id FK lookup and prevents duplicate term numbers.
+    uniqueIndex('uq_installments_project_number').on(t.projectId, t.installmentNumber),
   ],
 );
 
@@ -73,17 +75,24 @@ export const invoices = pgTable(
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true })
       .notNull()
-      .default(sql`now()`),
+      .defaultNow()
+      .$onUpdate(() => new Date()),
   },
   (t) => [
-    check('invoices_amount_check', sql`${t.amount} >= 0`),
+    check('invoices_amount_check', sql`${t.amount} > 0`),
     // Spec ADR invoice statuses (portal-proyek-design.md): the fixtures use
     // draft/sent/partially_paid/paid/overdue/cancelled. Default 'draft'.
     check(
       'invoices_status_check',
       sql`${t.status} IN ('draft', 'sent', 'partially_paid', 'paid', 'overdue', 'cancelled')`,
     ),
+    check('invoices_paid_state', sql`(${t.status} = 'paid') = (${t.paidAt} IS NOT NULL)`),
+    check('invoices_due_after_issue', sql`${t.dueAt} >= ${t.issuedAt}`),
     index('idx_invoices_installment_id').on(t.installmentId),
+    // At most one live (non-cancelled) invoice per installment.
+    uniqueIndex('uq_invoices_installment_live')
+      .on(t.installmentId)
+      .where(sql`${t.status} <> 'cancelled'`),
     index('idx_invoices_status').on(t.status),
   ],
 );
@@ -94,7 +103,7 @@ export const payments = pgTable(
     id: bigserial('id', { mode: 'number' }).primaryKey(),
     invoiceId: bigint('invoice_id', { mode: 'number' })
       .notNull()
-      .references(() => invoices.id, { onDelete: 'cascade' }),
+      .references(() => invoices.id, { onDelete: 'restrict' }),
     amount: bigint('amount', { mode: 'bigint' }).notNull(),
     paymentMethod: varchar('payment_method', { length: 30 }).notNull(),
     paymentDate: date('payment_date').notNull(),
@@ -110,12 +119,21 @@ export const payments = pgTable(
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true })
       .notNull()
-      .default(sql`now()`),
+      .defaultNow()
+      .$onUpdate(() => new Date()),
   },
   (t) => [
-    check('payments_amount_check', sql`${t.amount} >= 0`),
+    check('payments_amount_check', sql`${t.amount} > 0`),
     check('payments_status_check', sql`${t.status} IN ('pending', 'verified', 'rejected')`),
+    // Status/field coherence: verified needs verifier+time, rejected needs a reason.
+    check(
+      'payments_state_check',
+      sql`(${t.status} = 'verified' AND ${t.verifiedAt} IS NOT NULL AND ${t.verifiedByUserId} IS NOT NULL)
+          OR (${t.status} = 'rejected' AND ${t.rejectionReason} IS NOT NULL)
+          OR (${t.status} = 'pending' AND ${t.verifiedAt} IS NULL)`,
+    ),
     index('idx_payments_invoice_id').on(t.invoiceId),
+    index('idx_payments_verified_by').on(t.verifiedByUserId),
     index('idx_payments_status').on(t.status),
   ],
 );
@@ -129,7 +147,8 @@ export const bankAccounts = pgTable('bank_accounts', {
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true })
     .notNull()
-    .default(sql`now()`),
+    .defaultNow()
+    .$onUpdate(() => new Date()),
 });
 
 export const numberSequences = pgTable(
@@ -142,7 +161,8 @@ export const numberSequences = pgTable(
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true })
       .notNull()
-      .default(sql`now()`),
+      .defaultNow()
+      .$onUpdate(() => new Date()),
   },
   (t) => [
     uniqueIndex('idx_number_sequences_prefix_year').on(t.prefix, t.year),

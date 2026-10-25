@@ -17,6 +17,7 @@ import {
   bigserial,
   boolean,
   char,
+  check,
   inet,
   index,
   pgTable,
@@ -29,18 +30,27 @@ import {
 
 import { projects } from './project';
 
-export const users = pgTable('users', {
-  id: bigserial('id', { mode: 'number' }).primaryKey(),
-  email: varchar('email', { length: 255 }).notNull().unique(),
-  name: varchar('name', { length: 100 }).notNull(),
-  passwordHash: varchar('password_hash', { length: 255 }).notNull(),
-  totpSecret: varchar('totp_secret', { length: 255 }),
-  totpEnabled: boolean('totp_enabled').notNull().default(false),
-  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
-  updatedAt: timestamp('updated_at', { withTimezone: true })
-    .notNull()
-    .default(sql`now()`),
-});
+export const users = pgTable(
+  'users',
+  {
+    id: bigserial('id', { mode: 'number' }).primaryKey(),
+    email: varchar('email', { length: 255 }).notNull(),
+    name: varchar('name', { length: 100 }).notNull(),
+    passwordHash: varchar('password_hash', { length: 255 }).notNull(),
+    totpSecret: varchar('totp_secret', { length: 255 }),
+    totpEnabled: boolean('totp_enabled').notNull().default(false),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true })
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
+  },
+  (t) => [
+    // Case-insensitive unique email (replaces the plain unique constraint).
+    uniqueIndex('uq_users_email_lower').on(sql`lower(${t.email})`),
+    check('users_totp_secret_check', sql`NOT ${t.totpEnabled} OR ${t.totpSecret} IS NOT NULL`),
+  ],
+);
 
 export const portalLinks = pgTable(
   'portal_links',
@@ -64,7 +74,8 @@ export const portalLinks = pgTable(
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true })
       .notNull()
-      .default(sql`now()`),
+      .defaultNow()
+      .$onUpdate(() => new Date()),
   },
   (t) => [
     // One active link per project. Partial predicate kept in sync with the
@@ -72,7 +83,13 @@ export const portalLinks = pgTable(
     uniqueIndex('idx_portal_links_active_project')
       .on(t.projectId)
       .where(sql`${t.revokedAt} IS NULL`),
-    index('idx_portal_links_token_hash').on(t.tokenHash),
+    // All-rows FK/project lookup (the partial unique above skips revoked rows).
+    index('idx_portal_links_project_id').on(t.projectId),
+    index('idx_portal_links_created_by').on(t.createdByUserId),
+    check('pl_token_hash_hex', sql`${t.tokenHash} ~ '^[0-9a-f]{64}$'`),
+    check('pl_failed_attempts_check', sql`${t.failedAttempts} BETWEEN 0 AND 5`),
+    check('pl_lockout_count_check', sql`${t.lockoutCount} BETWEEN 0 AND 3`),
+    check('pl_expiry_check', sql`${t.expiresAt} > ${t.createdAt}`),
   ],
 );
 
@@ -89,5 +106,8 @@ export const portalSessions = pgTable(
     expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   },
-  (t) => [index('idx_portal_sessions_session_token_hash').on(t.sessionTokenHash)],
+  (t) => [
+    index('idx_portal_sessions_portal_link_id').on(t.portalLinkId),
+    check('ps_session_token_hash_hex', sql`${t.sessionTokenHash} ~ '^[0-9a-f]{64}$'`),
+  ],
 );

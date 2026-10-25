@@ -34,7 +34,8 @@ import type {
 
 let counter = 0;
 const seq = () => ++counter;
-const hash64 = (s: string) => s.padEnd(64, '0').slice(0, 64);
+// Valid lowercase-hex 64-char string (satisfies the *_hex CHECK constraints).
+const hex64 = (n: number) => n.toString(16).padStart(64, '0');
 const thirtyDays = () => new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
 
 export function makeUser(overrides: Partial<NewUser> = {}): NewUser {
@@ -88,7 +89,7 @@ export function makeDocumentVersion(
     documentId: 0,
     versionNumber: 1,
     contentSnapshot: '{}',
-    contentHash: hash64('0'),
+    contentHash: hex64(0),
     createdByUserId: 0,
     ...overrides,
   };
@@ -116,8 +117,9 @@ export function makeDocumentDecision(
     documentVersionId: 0,
     decision: 'approved',
     decidedByName: 'Client',
-    clientHash: hash64('0'),
+    clientHash: hex64(0),
     ipAddress: '0.0.0.0',
+    userAgent: 'factory',
     ...overrides,
   };
 }
@@ -135,7 +137,7 @@ export function makeInstallment(overrides: Partial<NewInstallment> = {}): NewIns
     installmentNumber: 1,
     label: 'DP 50%',
     percentageBasisPoints: 5000,
-    amount: 0n,
+    amount: 1n,
     ...overrides,
   };
 }
@@ -145,7 +147,7 @@ export function makeInvoice(overrides: Partial<NewInvoice> = {}): NewInvoice {
   return {
     installmentId: 0,
     invoiceNumber: `INV-TEST-${String(n).padStart(4, '0')}`,
-    amount: 0n,
+    amount: 1n,
     dueAt: thirtyDays(),
     status: 'draft',
     ...overrides,
@@ -155,7 +157,7 @@ export function makeInvoice(overrides: Partial<NewInvoice> = {}): NewInvoice {
 export function makePayment(overrides: Partial<NewPayment> = {}): NewPayment {
   return {
     invoiceId: 0,
-    amount: 0n,
+    amount: 1n,
     paymentMethod: 'bank_transfer',
     paymentDate: '2026-01-01',
     status: 'pending',
@@ -182,7 +184,7 @@ export function makePortalLink(overrides: Partial<NewPortalLink> = {}): NewPorta
   const n = seq();
   return {
     projectId: 0,
-    tokenHash: hash64(`token${n}`),
+    tokenHash: hex64(n),
     encryptedToken: 'seed-placeholder',
     pinHash: 'argon2-placeholder',
     expiresAt: thirtyDays(),
@@ -195,7 +197,7 @@ export function makePortalSession(overrides: Partial<NewPortalSession> = {}): Ne
   const n = seq();
   return {
     portalLinkId: 0,
-    sessionTokenHash: hash64(`session${n}`),
+    sessionTokenHash: hex64(n),
     ipAddress: '0.0.0.0',
     userAgent: 'seed',
     expiresAt: thirtyDays(),

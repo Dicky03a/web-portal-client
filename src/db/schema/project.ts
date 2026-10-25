@@ -26,20 +26,25 @@ import { users } from './portal';
 
 const STATUS_IN_LIST = PROJECT_STATUSES.map((s) => `'${s}'`).join(', ');
 
-export const clients = pgTable('clients', {
-  id: bigserial('id', { mode: 'number' }).primaryKey(),
-  name: varchar('name', { length: 100 }).notNull(),
-  companyName: varchar('company_name', { length: 150 }),
-  email: varchar('email', { length: 255 }).notNull(),
-  phone: varchar('phone', { length: 20 }).notNull(),
-  address: text('address'),
-  notes: text('notes'),
-  archivedAt: timestamp('archived_at', { withTimezone: true }),
-  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
-  updatedAt: timestamp('updated_at', { withTimezone: true })
-    .notNull()
-    .default(sql`now()`),
-});
+export const clients = pgTable(
+  'clients',
+  {
+    id: bigserial('id', { mode: 'number' }).primaryKey(),
+    name: varchar('name', { length: 100 }).notNull(),
+    companyName: varchar('company_name', { length: 150 }),
+    email: varchar('email', { length: 255 }).notNull(),
+    phone: varchar('phone', { length: 20 }).notNull(),
+    address: text('address'),
+    notes: text('notes'),
+    archivedAt: timestamp('archived_at', { withTimezone: true }),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true })
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
+  },
+  (t) => [check('clients_email_lower', sql`${t.email} = lower(${t.email})`)],
+);
 
 export const projects = pgTable(
   'projects',
@@ -63,7 +68,8 @@ export const projects = pgTable(
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true })
       .notNull()
-      .default(sql`now()`),
+      .defaultNow()
+      .$onUpdate(() => new Date()),
   },
   (t) => [
     check('projects_status_check', sql.raw(`status IN (${STATUS_IN_LIST})`)),
@@ -73,6 +79,15 @@ export const projects = pgTable(
     check(
       'projects_cancel_reason_check',
       sql`(${t.cancelledAt} IS NULL AND ${t.cancelReason} IS NULL) OR (${t.cancelledAt} IS NOT NULL AND ${t.cancelReason} IS NOT NULL)`,
+    ),
+    // Status must agree with its terminal timestamp.
+    check(
+      'projects_cancelled_state',
+      sql`(${t.status} = 'cancelled') = (${t.cancelledAt} IS NOT NULL)`,
+    ),
+    check(
+      'projects_completed_state',
+      sql`(${t.status} = 'completed') = (${t.completedAt} IS NOT NULL)`,
     ),
     index('idx_projects_client_id').on(t.clientId),
     index('idx_projects_status').on(t.status),
@@ -100,6 +115,7 @@ export const projectStatusHistories = pgTable(
       'psh_from_status_check',
       sql.raw(`from_status IS NULL OR from_status IN (${STATUS_IN_LIST})`),
     ),
+    check('psh_distinct_check', sql`${t.fromStatus} IS DISTINCT FROM ${t.toStatus}`),
     index('idx_psh_project_id').on(t.projectId),
     index('idx_psh_changed_by_user_id').on(t.changedByUserId),
   ],
