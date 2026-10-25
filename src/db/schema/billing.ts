@@ -68,7 +68,7 @@ export const invoices = pgTable(
     issuedAt: timestamp('issued_at', { withTimezone: true }).notNull().defaultNow(),
     dueAt: timestamp('due_at', { withTimezone: true }).notNull(),
     paidAt: timestamp('paid_at', { withTimezone: true }),
-    status: varchar('status', { length: 20 }).notNull().default('unpaid'),
+    status: varchar('status', { length: 20 }).notNull().default('draft'),
     notes: text('notes'),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true })
@@ -77,9 +77,11 @@ export const invoices = pgTable(
   },
   (t) => [
     check('invoices_amount_check', sql`${t.amount} >= 0`),
+    // Spec ADR invoice statuses (portal-proyek-design.md): the fixtures use
+    // draft/sent/partially_paid/paid/overdue/cancelled. Default 'draft'.
     check(
       'invoices_status_check',
-      sql`${t.status} IN ('unpaid', 'pending_verification', 'paid', 'cancelled')`,
+      sql`${t.status} IN ('draft', 'sent', 'partially_paid', 'paid', 'overdue', 'cancelled')`,
     ),
     index('idx_invoices_installment_id').on(t.installmentId),
     index('idx_invoices_status').on(t.status),

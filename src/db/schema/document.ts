@@ -12,6 +12,7 @@
 
 import { sql } from 'drizzle-orm';
 import {
+  type AnyPgColumn,
   bigint,
   bigserial,
   boolean,
@@ -41,7 +42,7 @@ export const documents = pgTable(
     type: varchar('type', { length: 32 }).notNull(),
     // Set after a version is created; points at the current head version.
     latestVersionId: bigint('latest_version_id', { mode: 'number' }).references(
-      () => documentVersions.id,
+      (): AnyPgColumn => documentVersions.id,
       { onDelete: 'set null' },
     ),
     createdByUserId: bigint('created_by_user_id', { mode: 'number' })
@@ -64,7 +65,7 @@ export const documentVersions = pgTable(
     id: bigserial('id', { mode: 'number' }).primaryKey(),
     documentId: bigint('document_id', { mode: 'number' })
       .notNull()
-      .references(() => documents.id, { onDelete: 'cascade' }),
+      .references((): AnyPgColumn => documents.id, { onDelete: 'cascade' }),
     versionNumber: smallint('version_number').notNull(),
     contentSnapshot: text('content_snapshot').notNull(),
     contentHash: char('content_hash', { length: 64 }).notNull(),
