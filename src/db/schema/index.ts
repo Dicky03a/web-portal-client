@@ -3,3 +3,4 @@
 // (document, billing, common) are added in later Epic 2 tasks.
 export * from './portal';
 export * from './project';
+export * from './document';
