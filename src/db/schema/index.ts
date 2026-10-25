@@ -1,4 +1,5 @@
 // Barrel export for all Drizzle schema tables.
-// Per-domain schema files (portal, project, document, billing, common)
-// are added in Epic 2 and re-exported here.
-export {};
+// Per-domain schema files are re-exported here. More domains
+// (document, billing, common) are added in later Epic 2 tasks.
+export * from './portal';
+export * from './project';
