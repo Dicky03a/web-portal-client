@@ -7,7 +7,7 @@
 
 /** Format an integer rupiah amount as `"Rp1.234.567"` (id-ID grouping). */
 export function formatRupiah(amount: bigint): string {
-  return `Rp${amount.toLocaleString("id-ID")}`;
+  return `Rp${amount.toLocaleString('id-ID')}`;
 }
 
 /**
@@ -15,7 +15,7 @@ export function formatRupiah(amount: bigint): string {
  * and `.` thousands separators. Throws on any non-digit remainder.
  */
 export function parseRupiah(str: string): bigint {
-  const cleaned = str.replace(/rp/i, "").replace(/[.\s]/g, "").trim();
+  const cleaned = str.replace(/rp/i, '').replace(/[.\s]/g, '').trim();
   if (!/^-?\d+$/.test(cleaned)) {
     throw new Error(`Invalid rupiah string: ${str}`);
   }

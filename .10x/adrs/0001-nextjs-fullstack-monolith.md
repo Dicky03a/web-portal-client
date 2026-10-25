@@ -9,6 +9,7 @@
 The PRD specified Laravel 13 + Inertia + React as the tech stack. However, the developer (sole maintainer) is transitioning from PHP to the JS/TS ecosystem and wants to build with Next.js.
 
 The application has these needs:
+
 - Server-rendered pages for portal (SEO, performance on mobile)
 - Complex form handling with server-side validation
 - PostgreSQL 18 with triggers, CHECK constraints, partial unique indexes
@@ -18,6 +19,7 @@ The application has these needs:
 ## Decision
 
 Use **full-stack Next.js 15 (App Router)** as a monolith with:
+
 - **TypeScript** for type safety across client/server
 - **Drizzle ORM** for SQL-first database access
 - **Server Actions** for mutations (replacing REST APIs)
@@ -26,6 +28,7 @@ Use **full-stack Next.js 15 (App Router)** as a monolith with:
 ## Consequences
 
 ### Positive
+
 - Single language (TypeScript) across entire stack
 - No separate API layer needed — Server Actions handle mutations
 - React Server Components eliminate client-side data fetching boilerplate
@@ -33,6 +36,7 @@ Use **full-stack Next.js 15 (App Router)** as a monolith with:
 - Large Next.js ecosystem for UI components (shadcn/ui), auth patterns, deployment
 
 ### Negative
+
 - PRD's Laravel-specific conventions (Eloquent, factories, migrations) need translation
 - DB Design document references Laravel patterns that must be mapped to Drizzle
 - Next.js App Router is newer than Pages Router — fewer mature patterns
@@ -40,6 +44,7 @@ Use **full-stack Next.js 15 (App Router)** as a monolith with:
 - Drizzle has smaller community than Prisma or Eloquent
 
 ### Neutral
+
 - Deployment complexity is similar (Docker Compose for both)
 - Testing story is comparable (Vitest vs PHPUnit)
 - Auth implementation is custom in both cases (no Laravel Sanctum equivalent)

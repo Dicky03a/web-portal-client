@@ -6,23 +6,23 @@ Versi: 0.1 | Tanggal: 19 Okt 2026
 
 ## 1. Sumber dan kepemilikan
 
-| Dokumen | Peran | Versi |
-|---------|-------|-------|
-| PRD — Portal Proyek Jasa Website | Janji produk, audiens, batasan | 0.1 |
-| UX.md | Layar (S-01…S-47), alur (F-01…F-16), navigasi, state per layar | 0.1 |
-| COPY.md | Suara, teks UI, variabel, glosarium | 0.1 |
-| FIXTURES.md | Data realistis, edge case, data ekstrem | 0.1 |
-| Pencil — 00 Foundations | Token visual, pola komponen, tema gelap | 0.1 |
+| Dokumen                          | Peran                                                          | Versi |
+| -------------------------------- | -------------------------------------------------------------- | ----- |
+| PRD — Portal Proyek Jasa Website | Janji produk, audiens, batasan                                 | 0.1   |
+| UX.md                            | Layar (S-01…S-47), alur (F-01…F-16), navigasi, state per layar | 0.1   |
+| COPY.md                          | Suara, teks UI, variabel, glosarium                            | 0.1   |
+| FIXTURES.md                      | Data realistis, edge case, data ekstrem                        | 0.1   |
+| Pencil — 00 Foundations          | Token visual, pola komponen, tema gelap                        | 0.1   |
 
 **Kepemilikan pipeline:**
 
-| Area | Pemilik | DESIGN.md |
-|------|---------|-----------|
-| Layar, alur, navigasi, state per layar | UX.md | Referensi S-xx, F-xx |
-| Suara, terminologi, teks error | COPY.md | Nada visual selaras dengan COPY.md |
-| Data contoh, edge case | FIXTURES.md | Daftar ekstrem visual saja |
-| Anatomi komponen, varian | COMPONENTS.md | Token dan aturan saja |
-| Token visual, tema, aksesibilitas visual | **DESIGN.md** | Penuh — sumber kebenaran |
+| Area                                     | Pemilik       | DESIGN.md                          |
+| ---------------------------------------- | ------------- | ---------------------------------- |
+| Layar, alur, navigasi, state per layar   | UX.md         | Referensi S-xx, F-xx               |
+| Suara, terminologi, teks error           | COPY.md       | Nada visual selaras dengan COPY.md |
+| Data contoh, edge case                   | FIXTURES.md   | Daftar ekstrem visual saja         |
+| Anatomi komponen, varian                 | COMPONENTS.md | Token dan aturan saja              |
+| Token visual, tema, aksesibilitas visual | **DESIGN.md** | Penuh — sumber kebenaran           |
 
 ---
 
@@ -67,14 +67,14 @@ Versi: 0.1 | Tanggal: 19 Okt 2026
 
 ### Posisi pada sumbu visual
 
-| Sumbu | Posisi | Alasan |
-|-------|--------|--------|
-| Ekspresif — Restrained | **Restrained** (80%) | Data dan status bicara, bukan dekorasi |
-| Warm — Clinical | **Clinical** (70%) | Presisi angka dan tabel mendominasi |
-| Editorial — Utilitarian | **Utilitarian** (75%) | Tool kerja, bukan majalah |
-| Airy — Dense | **Dense** (65%) | Freelancer butuh informasi padat di satu pandangan |
-| Playful — Serious | **Serious** (80%) | Uang dan kontrak, bukan permainan |
-| Familiar — Novel | **Familiar** (70%) | Admin panel konvensional, tidak perlu belajar ulang |
+| Sumbu                   | Posisi                | Alasan                                              |
+| ----------------------- | --------------------- | --------------------------------------------------- |
+| Ekspresif — Restrained  | **Restrained** (80%)  | Data dan status bicara, bukan dekorasi              |
+| Warm — Clinical         | **Clinical** (70%)    | Presisi angka dan tabel mendominasi                 |
+| Editorial — Utilitarian | **Utilitarian** (75%) | Tool kerja, bukan majalah                           |
+| Airy — Dense            | **Dense** (65%)       | Freelancer butuh informasi padat di satu pandangan  |
+| Playful — Serious       | **Serious** (80%)     | Uang dan kontrak, bukan permainan                   |
+| Familiar — Novel        | **Familiar** (70%)    | Admin panel konvensional, tidak perlu belajar ulang |
 
 ### Signature move
 
@@ -104,66 +104,66 @@ Versi: 0.1 | Tanggal: 19 Okt 2026
 
 ### Palet
 
-| Token | Nilai | Peran |
-|-------|-------|-------|
-| `color.bg.base` | `#0A0A0A` | Latar utama aplikasi |
-| `color.bg.surface` | `#151515` | Permukaan kartu, sidebar |
-| `color.bg.surface-2` | `#1F1F1F` | Permukaan input, tombol secondary, nav item |
-| `color.bg.surface-3` | `#2A2A2A` | Permukaan hover, elemen interaktif aktif |
-| `color.text.primary` | `#FFFFFF` | Teks utama, heading, label |
-| `color.text.secondary` | `#B4B4B8` | Teks pendukung, body paragraf |
-| `color.text.muted` | `#85878D` | Teks tersier, placeholder, caption, help text |
-| `color.accent` | `#FF7A3D` | Aksen utama, tautan, elemen interaktif menonjol |
-| `color.state.success` | `#5BD68A` | Berhasil, dalam pengerjaan, selesai |
-| `color.state.warning` | `#F5C451` | Peringatan, menunggu pembayaran |
-| `color.state.danger` | `#FF6B6B` | Bahaya, error, batal, hapus |
-| `color.state.info` | `#8AB4FF` | Informasi, terkirim, menunggu respons |
-| `color.border.default` | `#252525` | Garis pemisah, border card (solid fallback dari 8% putih) |
-| `color.border.strong` | `#3D3D3D` | Border input, outline tombol (solid fallback dari 16% putih) |
-| `color.bg.button-primary` | `#FFFFFF` | Latar tombol utama |
-| `color.text.button-primary` | `#0A0A0A` | Teks tombol utama |
-| `color.bg.badge-draft` | `#1F1F1F` | Latar badge status Draf |
-| `color.bg.overlay` | `#000000` | Overlay modal/dialog (gunakan dengan opacity 60%) |
+| Token                       | Nilai     | Peran                                                        |
+| --------------------------- | --------- | ------------------------------------------------------------ |
+| `color.bg.base`             | `#0A0A0A` | Latar utama aplikasi                                         |
+| `color.bg.surface`          | `#151515` | Permukaan kartu, sidebar                                     |
+| `color.bg.surface-2`        | `#1F1F1F` | Permukaan input, tombol secondary, nav item                  |
+| `color.bg.surface-3`        | `#2A2A2A` | Permukaan hover, elemen interaktif aktif                     |
+| `color.text.primary`        | `#FFFFFF` | Teks utama, heading, label                                   |
+| `color.text.secondary`      | `#B4B4B8` | Teks pendukung, body paragraf                                |
+| `color.text.muted`          | `#85878D` | Teks tersier, placeholder, caption, help text                |
+| `color.accent`              | `#FF7A3D` | Aksen utama, tautan, elemen interaktif menonjol              |
+| `color.state.success`       | `#5BD68A` | Berhasil, dalam pengerjaan, selesai                          |
+| `color.state.warning`       | `#F5C451` | Peringatan, menunggu pembayaran                              |
+| `color.state.danger`        | `#FF6B6B` | Bahaya, error, batal, hapus                                  |
+| `color.state.info`          | `#8AB4FF` | Informasi, terkirim, menunggu respons                        |
+| `color.border.default`      | `#252525` | Garis pemisah, border card (solid fallback dari 8% putih)    |
+| `color.border.strong`       | `#3D3D3D` | Border input, outline tombol (solid fallback dari 16% putih) |
+| `color.bg.button-primary`   | `#FFFFFF` | Latar tombol utama                                           |
+| `color.text.button-primary` | `#0A0A0A` | Teks tombol utama                                            |
+| `color.bg.badge-draft`      | `#1F1F1F` | Latar badge status Draf                                      |
+| `color.bg.overlay`          | `#000000` | Overlay modal/dialog (gunakan dengan opacity 60%)            |
 
 ### Pemetaan status proyek
 
-| Status | Token warna | Token latar badge (10% opacity) | Label (COPY.md) |
-|--------|-------------|-------------------------------|------------------|
-| `draft` | `color.text.secondary` | `color.bg.badge-draft` | Draf |
-| `quotation_sent` | `color.state.info` | 10% `color.state.info` | Penawaran Terkirim |
-| `awaiting_down_payment` | `color.state.warning` | 10% `color.state.warning` | Menunggu DP |
-| `in_progress` | `color.state.success` | 10% `color.state.success` | Dalam Pengerjaan |
-| `client_review` | `color.accent` | 10% `color.accent` | Review Klien |
-| `handover_sent` | `color.state.info` | 10% `color.state.info` | Handover Terkirim |
-| `warranty` | `color.state.success` | 10% `color.state.success` | Garansi |
-| `completed` | `color.state.success` | 10% `color.state.success` | Selesai |
-| `cancelled` | `color.state.danger` | 10% `color.state.danger` | Dibatalkan |
+| Status                  | Token warna            | Token latar badge (10% opacity) | Label (COPY.md)    |
+| ----------------------- | ---------------------- | ------------------------------- | ------------------ |
+| `draft`                 | `color.text.secondary` | `color.bg.badge-draft`          | Draf               |
+| `quotation_sent`        | `color.state.info`     | 10% `color.state.info`          | Penawaran Terkirim |
+| `awaiting_down_payment` | `color.state.warning`  | 10% `color.state.warning`       | Menunggu DP        |
+| `in_progress`           | `color.state.success`  | 10% `color.state.success`       | Dalam Pengerjaan   |
+| `client_review`         | `color.accent`         | 10% `color.accent`              | Review Klien       |
+| `handover_sent`         | `color.state.info`     | 10% `color.state.info`          | Handover Terkirim  |
+| `warranty`              | `color.state.success`  | 10% `color.state.success`       | Garansi            |
+| `completed`             | `color.state.success`  | 10% `color.state.success`       | Selesai            |
+| `cancelled`             | `color.state.danger`   | 10% `color.state.danger`        | Dibatalkan         |
 
 ### Pasangan kontras
 
-| Teks | Latar | Min |
-|------|-------|-----|
-| `color.text.primary` | `color.bg.base` | 4.5 |
-| `color.text.primary` | `color.bg.surface` | 4.5 |
-| `color.text.primary` | `color.bg.surface-2` | 4.5 |
-| `color.text.primary` | `color.bg.surface-3` | 4.5 |
-| `color.text.secondary` | `color.bg.base` | 4.5 |
-| `color.text.secondary` | `color.bg.surface` | 4.5 |
-| `color.text.secondary` | `color.bg.surface-2` | 4.5 |
-| `color.text.muted` | `color.bg.base` | 3 |
-| `color.text.muted` | `color.bg.surface` | 3 |
-| `color.text.muted` | `color.bg.surface-2` | 3 |
+| Teks                        | Latar                     | Min |
+| --------------------------- | ------------------------- | --- |
+| `color.text.primary`        | `color.bg.base`           | 4.5 |
+| `color.text.primary`        | `color.bg.surface`        | 4.5 |
+| `color.text.primary`        | `color.bg.surface-2`      | 4.5 |
+| `color.text.primary`        | `color.bg.surface-3`      | 4.5 |
+| `color.text.secondary`      | `color.bg.base`           | 4.5 |
+| `color.text.secondary`      | `color.bg.surface`        | 4.5 |
+| `color.text.secondary`      | `color.bg.surface-2`      | 4.5 |
+| `color.text.muted`          | `color.bg.base`           | 3   |
+| `color.text.muted`          | `color.bg.surface`        | 3   |
+| `color.text.muted`          | `color.bg.surface-2`      | 3   |
 | `color.text.button-primary` | `color.bg.button-primary` | 4.5 |
-| `color.accent` | `color.bg.base` | 3 |
-| `color.accent` | `color.bg.surface` | 3 |
-| `color.state.success` | `color.bg.base` | 3 |
-| `color.state.success` | `color.bg.surface` | 3 |
-| `color.state.warning` | `color.bg.base` | 3 |
-| `color.state.warning` | `color.bg.surface` | 3 |
-| `color.state.danger` | `color.bg.base` | 3 |
-| `color.state.danger` | `color.bg.surface` | 3 |
-| `color.state.info` | `color.bg.base` | 3 |
-| `color.state.info` | `color.bg.surface` | 3 |
+| `color.accent`              | `color.bg.base`           | 3   |
+| `color.accent`              | `color.bg.surface`        | 3   |
+| `color.state.success`       | `color.bg.base`           | 3   |
+| `color.state.success`       | `color.bg.surface`        | 3   |
+| `color.state.warning`       | `color.bg.base`           | 3   |
+| `color.state.warning`       | `color.bg.surface`        | 3   |
+| `color.state.danger`        | `color.bg.base`           | 3   |
+| `color.state.danger`        | `color.bg.surface`        | 3   |
+| `color.state.info`          | `color.bg.base`           | 3   |
+| `color.state.info`          | `color.bg.surface`        | 3   |
 
 ---
 
@@ -171,25 +171,25 @@ Versi: 0.1 | Tanggal: 19 Okt 2026
 
 ### Font stack
 
-| Peran | Font | Fallback |
-|-------|------|----------|
-| Heading + Body | Instrument Sans | Inter, system-ui, sans-serif |
-| Angka + Kode | Geist Mono | ui-monospace, monospace |
-| Sistem (fallback) | Inter | system-ui, sans-serif |
+| Peran             | Font            | Fallback                     |
+| ----------------- | --------------- | ---------------------------- |
+| Heading + Body    | Instrument Sans | Inter, system-ui, sans-serif |
+| Angka + Kode      | Geist Mono      | ui-monospace, monospace      |
+| Sistem (fallback) | Inter           | system-ui, sans-serif        |
 
 ### Skala tipografi
 
-| Token | Peran | Font | Ukuran | Line height | Berat | Tracking | Catatan |
-|-------|-------|------|--------|-------------|-------|----------|---------|
-| `font.display` | Display / hero | Instrument Sans | 40px | 1.1 (44px) | 500 | -0.8px (-2%) | Hanya S-03 dashboard |
-| `font.h1` | Judul halaman | Instrument Sans | 28px | 1.2 (34px) | 500 | -0.28px (-1%) | Satu per layar |
-| `font.h2` | Judul bagian | Instrument Sans | 17px | 1.3 (22px) | 500 | 0 | Section header |
-| `font.body` | Isi paragraf | Instrument Sans | 15px | 1.55 (23px) | 400 | 0 | Warna: `color.text.secondary` |
-| `font.caption` | Keterangan, help text | Instrument Sans | 13px | 1.45 (19px) | 400 | 0 | Warna: `color.text.muted` |
-| `font.label` | Label input, nav | Instrument Sans | 14px | 1.4 (20px) | 500 | 0 | Warna: `color.text.primary` |
-| `font.button` | Teks tombol | Instrument Sans | 15px | 1 | 500 | 0 | Di dalam tombol h-48 |
-| `font.badge` | Label badge status | Instrument Sans | 12px | 1 | 500 | 0 | Di dalam badge h-26 |
-| `font.mono` | Angka, kode, PIN | Geist Mono | inherit | inherit | 500 | -0.3px | `font-variant-numeric: tabular-nums` |
+| Token          | Peran                 | Font            | Ukuran  | Line height | Berat | Tracking      | Catatan                              |
+| -------------- | --------------------- | --------------- | ------- | ----------- | ----- | ------------- | ------------------------------------ |
+| `font.display` | Display / hero        | Instrument Sans | 40px    | 1.1 (44px)  | 500   | -0.8px (-2%)  | Hanya S-03 dashboard                 |
+| `font.h1`      | Judul halaman         | Instrument Sans | 28px    | 1.2 (34px)  | 500   | -0.28px (-1%) | Satu per layar                       |
+| `font.h2`      | Judul bagian          | Instrument Sans | 17px    | 1.3 (22px)  | 500   | 0             | Section header                       |
+| `font.body`    | Isi paragraf          | Instrument Sans | 15px    | 1.55 (23px) | 400   | 0             | Warna: `color.text.secondary`        |
+| `font.caption` | Keterangan, help text | Instrument Sans | 13px    | 1.45 (19px) | 400   | 0             | Warna: `color.text.muted`            |
+| `font.label`   | Label input, nav      | Instrument Sans | 14px    | 1.4 (20px)  | 500   | 0             | Warna: `color.text.primary`          |
+| `font.button`  | Teks tombol           | Instrument Sans | 15px    | 1           | 500   | 0             | Di dalam tombol h-48                 |
+| `font.badge`   | Label badge status    | Instrument Sans | 12px    | 1           | 500   | 0             | Di dalam badge h-26                  |
+| `font.mono`    | Angka, kode, PIN      | Geist Mono      | inherit | inherit     | 500   | -0.3px        | `font-variant-numeric: tabular-nums` |
 
 ---
 
@@ -197,23 +197,23 @@ Versi: 0.1 | Tanggal: 19 Okt 2026
 
 ### Skala spacing (4px grid)
 
-| Token | Nilai | Penggunaan umum |
-|-------|-------|-----------------|
-| `space.4` | 4px | Gap antar ikon dan teks kecil |
-| `space.8` | 8px | Padding dalam badge, gap antar item kecil |
-| `space.12` | 12px | Gap antar nav items, padding tombol vertikal |
-| `space.16` | 16px | Padding konten utama (mobile gutter), gap form field |
-| `space.24` | 24px | Gap antar section kecil, margin antar card |
-| `space.32` | 32px | Padding sidebar, gap antar section besar |
-| `space.48` | 48px | Gap antar section utama halaman |
+| Token      | Nilai | Penggunaan umum                                      |
+| ---------- | ----- | ---------------------------------------------------- |
+| `space.4`  | 4px   | Gap antar ikon dan teks kecil                        |
+| `space.8`  | 8px   | Padding dalam badge, gap antar item kecil            |
+| `space.12` | 12px  | Gap antar nav items, padding tombol vertikal         |
+| `space.16` | 16px  | Padding konten utama (mobile gutter), gap form field |
+| `space.24` | 24px  | Gap antar section kecil, margin antar card           |
+| `space.32` | 32px  | Padding sidebar, gap antar section besar             |
+| `space.48` | 48px  | Gap antar section utama halaman                      |
 
 ### Grid dan margin
 
-| Breakpoint | Kolom | Gutter | Margin samping |
-|------------|-------|--------|----------------|
-| Mobile (< 768px) | 1 | 16px | 16px |
-| Tablet (768–1023px) | 2 | 24px | 24px |
-| Desktop (≥ 1024px) | 12 | 24px | 32px (konten), 0 (sidebar) |
+| Breakpoint          | Kolom | Gutter | Margin samping             |
+| ------------------- | ----- | ------ | -------------------------- |
+| Mobile (< 768px)    | 1     | 16px   | 16px                       |
+| Tablet (768–1023px) | 2     | 24px   | 24px                       |
+| Desktop (≥ 1024px)  | 12    | 24px   | 32px (konten), 0 (sidebar) |
 
 ### Layout sidebar (desktop)
 
@@ -228,19 +228,19 @@ Versi: 0.1 | Tanggal: 19 Okt 2026
 
 ### Skala radius
 
-| Token | Nilai | Penggunaan |
-|-------|-------|------------|
-| `radius.pill` | 999px | Tombol, badge status, chip |
-| `radius.card` | 20px | Card, modal, dialog, dropdown |
-| `radius.input` | 14px | Input text, textarea, select |
-| `radius.small` | 8px | Tooltip, small element, nav item highlight |
+| Token          | Nilai | Penggunaan                                 |
+| -------------- | ----- | ------------------------------------------ |
+| `radius.pill`  | 999px | Tombol, badge status, chip                 |
+| `radius.card`  | 20px  | Card, modal, dialog, dropdown              |
+| `radius.input` | 14px  | Input text, textarea, select               |
+| `radius.small` | 8px   | Tooltip, small element, nav item highlight |
 
 ### Border
 
-| Token | Nilai | Penggunaan |
-|-------|-------|------------|
-| `border.width.default` | 1px | Border card, input, divider |
-| `border.width.focus` | 2px | Focus ring |
+| Token                  | Nilai | Penggunaan                  |
+| ---------------------- | ----- | --------------------------- |
+| `border.width.default` | 1px   | Border card, input, divider |
+| `border.width.focus`   | 2px   | Focus ring                  |
 
 ### Shadow / Elevation
 
@@ -259,11 +259,11 @@ Tidak ada box-shadow di dark theme. Hierarki dibangun dari perbedaan tingkat per
 
 ### Gambar
 
-| Konteks | Rasio | Fallback tanpa gambar |
-|---------|-------|-----------------------|
-| Bukti transfer | 3:4 (portrait) | Placeholder ikon receipt |
-| Lampiran progres | 16:9 (landscape) | Placeholder ikon image |
-| Avatar / logo usaha | 1:1 | Inisial 2 huruf di atas `color.bg.surface-2` |
+| Konteks             | Rasio            | Fallback tanpa gambar                        |
+| ------------------- | ---------------- | -------------------------------------------- |
+| Bukti transfer      | 3:4 (portrait)   | Placeholder ikon receipt                     |
+| Lampiran progres    | 16:9 (landscape) | Placeholder ikon image                       |
+| Avatar / logo usaha | 1:1              | Inisial 2 huruf di atas `color.bg.surface-2` |
 
 Semua gambar: `object-fit: cover`, rounded sesuai konteks (`radius.small` untuk thumbnail, `radius.card` untuk preview besar).
 
@@ -273,10 +273,10 @@ Semua gambar: `object-fit: cover`, rounded sesuai konteks (`radius.small` untuk 
 
 ### Durasi
 
-| Token | Nilai | Penggunaan |
-|-------|-------|------------|
-| `motion.duration.fast` | 100ms | Hover state, focus ring |
-| `motion.duration.base` | 200ms | Transisi warna, opacity, border |
+| Token                  | Nilai | Penggunaan                        |
+| ---------------------- | ----- | --------------------------------- |
+| `motion.duration.fast` | 100ms | Hover state, focus ring           |
+| `motion.duration.base` | 200ms | Transisi warna, opacity, border   |
 | `motion.duration.slow` | 300ms | Slide-in sidebar, expand/collapse |
 
 ### Easing
@@ -311,23 +311,23 @@ Semua gambar: `object-fit: cover`, rounded sesuai konteks (`radius.small` untuk 
 
 ### Breakpoint
 
-| Token | Titik henti | Target |
-|-------|------------|--------|
-| `breakpoint.sm` | 640px | Ponsel besar |
-| `breakpoint.md` | 768px | Tablet portrait |
-| `breakpoint.lg` | 1024px | Tablet landscape / desktop kecil |
-| `breakpoint.xl` | 1280px | Desktop |
+| Token           | Titik henti | Target                           |
+| --------------- | ----------- | -------------------------------- |
+| `breakpoint.sm` | 640px       | Ponsel besar                     |
+| `breakpoint.md` | 768px       | Tablet portrait                  |
+| `breakpoint.lg` | 1024px      | Tablet landscape / desktop kecil |
+| `breakpoint.xl` | 1280px      | Desktop                          |
 
 ### Aturan reflow
 
-| Komponen | Mobile (< 768px) | Desktop (≥ 1024px) |
-|----------|-------------------|---------------------|
-| Navigasi admin | Bottom tab bar (h-56, 5 item) | Sidebar kiri (w-280) |
-| Navigasi portal | App bar (h-56) + back button | Tidak berubah (portal tetap mobile-first) |
-| Tabel data | Card list (stack vertikal) | Tabel horizontal penuh |
-| Form 2 kolom | Stack 1 kolom | Side-by-side |
-| Dashboard cards | Stack vertikal | Grid 2–3 kolom |
-| Modal | Fullscreen bottom sheet | Centered dialog max-w-480 |
+| Komponen        | Mobile (< 768px)              | Desktop (≥ 1024px)                        |
+| --------------- | ----------------------------- | ----------------------------------------- |
+| Navigasi admin  | Bottom tab bar (h-56, 5 item) | Sidebar kiri (w-280)                      |
+| Navigasi portal | App bar (h-56) + back button  | Tidak berubah (portal tetap mobile-first) |
+| Tabel data      | Card list (stack vertikal)    | Tabel horizontal penuh                    |
+| Form 2 kolom    | Stack 1 kolom                 | Side-by-side                              |
+| Dashboard cards | Stack vertikal                | Grid 2–3 kolom                            |
+| Modal           | Fullscreen bottom sheet       | Centered dialog max-w-480                 |
 
 ### Safe area
 
@@ -375,17 +375,17 @@ Semua gambar: `object-fit: cover`, rounded sesuai konteks (`radius.small` untuk 
 
 Visual system harus bertahan pada data ekstrem berikut:
 
-| Dimensi | Nilai ekstrem | Contoh |
-|---------|---------------|--------|
-| Nama proyek terpanjang | 79 karakter | "Aplikasi Inventori Gudang Multi-Cabang dan Sistem Pelaporan Stok Terintegrasi" |
-| Nama klien terpanjang | 59 karakter | "Siti Nurhaliza Putri Maharani Kusuma Dewi Anggraeni Purnama" |
-| Nama usaha terpanjang | 58 karakter | "PT Nusantara Digital Kreatif Teknologi Indonesia Sejahtera" |
-| Label status terpanjang | 19 karakter | "Menunggu Verifikasi" (invoice) |
-| Nominal terbesar | Rp 1.000.000.000 | 13 karakter termasuk "Rp" dan titik |
-| Item penawaran terbanyak | 8 item + 3 termin | Tabel harus scroll vertikal |
-| Daftar proyek | 50 proyek | Pagination 10 per halaman |
-| Daftar klien | 50 klien | Pagination 10 per halaman |
-| Rasio gambar | 3:4 (portrait), 16:9 (landscape) | Object-fit cover |
+| Dimensi                  | Nilai ekstrem                    | Contoh                                                                          |
+| ------------------------ | -------------------------------- | ------------------------------------------------------------------------------- |
+| Nama proyek terpanjang   | 79 karakter                      | "Aplikasi Inventori Gudang Multi-Cabang dan Sistem Pelaporan Stok Terintegrasi" |
+| Nama klien terpanjang    | 59 karakter                      | "Siti Nurhaliza Putri Maharani Kusuma Dewi Anggraeni Purnama"                   |
+| Nama usaha terpanjang    | 58 karakter                      | "PT Nusantara Digital Kreatif Teknologi Indonesia Sejahtera"                    |
+| Label status terpanjang  | 19 karakter                      | "Menunggu Verifikasi" (invoice)                                                 |
+| Nominal terbesar         | Rp 1.000.000.000                 | 13 karakter termasuk "Rp" dan titik                                             |
+| Item penawaran terbanyak | 8 item + 3 termin                | Tabel harus scroll vertikal                                                     |
+| Daftar proyek            | 50 proyek                        | Pagination 10 per halaman                                                       |
+| Daftar klien             | 50 klien                         | Pagination 10 per halaman                                                       |
+| Rasio gambar             | 3:4 (portrait), 16:9 (landscape) | Object-fit cover                                                                |
 
 ### Strategi penanganan
 
@@ -423,13 +423,13 @@ Sebelum menambah layar baru, jawab pertanyaan berikut. Jika ada jawaban "tidak",
 
 ## 16. Penundaan keputusan
 
-| Keputusan | Alasan ditunda | Trigger untuk memutuskan |
-|-----------|----------------|--------------------------|
-| Light theme | MVP hanya dark theme sesuai Pencil. Pertimbangkan jika ada permintaan klien enterprise. | Feedback pengguna setelah 3 bulan launch |
-| Chart/grafik dashboard | Non-goal di PRD. Dashboard hanya menampilkan angka ringkasan dan daftar. | Jika user research menunjukkan kebutuhan visualisasi tren |
-| Custom branding per klien | Portal klien menggunakan branding freelancer, bukan branding klien. | Jika fitur multi-tenant/white-label diminta |
-| Print stylesheet | Penawaran dan invoice dikirim sebagai PDF, bukan di-print dari browser. | Jika ada kebutuhan cetak langsung |
-| Notification badge angka | Iterasi 1 tidak ada notifikasi in-app. | Iterasi 2 jika fitur notifikasi ditambahkan |
+| Keputusan                 | Alasan ditunda                                                                          | Trigger untuk memutuskan                                  |
+| ------------------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| Light theme               | MVP hanya dark theme sesuai Pencil. Pertimbangkan jika ada permintaan klien enterprise. | Feedback pengguna setelah 3 bulan launch                  |
+| Chart/grafik dashboard    | Non-goal di PRD. Dashboard hanya menampilkan angka ringkasan dan daftar.                | Jika user research menunjukkan kebutuhan visualisasi tren |
+| Custom branding per klien | Portal klien menggunakan branding freelancer, bukan branding klien.                     | Jika fitur multi-tenant/white-label diminta               |
+| Print stylesheet          | Penawaran dan invoice dikirim sebagai PDF, bukan di-print dari browser.                 | Jika ada kebutuhan cetak langsung                         |
+| Notification badge angka  | Iterasi 1 tidak ada notifikasi in-app.                                                  | Iterasi 2 jika fitur notifikasi ditambahkan               |
 
 ---
 
@@ -448,28 +448,28 @@ COMPONENTS.md **wajib** merujuk token berikut, bukan nilai mentah:
 
 ### Kebutuhan komponen (dari UX.md §11.1)
 
-| Komponen | Layar utama | Token khusus | Uji ekstrem |
-|----------|-------------|--------------|--------------|
-| Button (Primary, Secondary, Danger, Ghost) | Semua | `color.bg.button-primary`, `color.text.button-primary`, `radius.pill`, h-48px | Label maks 24 karakter |
-| Badge status (9 status proyek + 6 invoice) | S-03, S-07, S-08, S-32, S-37 | Lihat pemetaan status §6, `radius.pill`, `font.badge`, h-26px | "Menunggu Verifikasi" 19 karakter |
-| Input Text | Semua form | `color.bg.surface`, `color.border.strong`, `radius.input`, h-52px | Placeholder maks 40 karakter |
-| Input PIN (6 digit) | S-30, S-31, S-34, S-38, S-44 | `font.mono`, tracking 4px | Semua digit terisi |
-| Textarea | S-10, S-36, S-40, S-43 | `color.bg.surface`, `radius.input` | 80 karakter (alasan/catatan) |
-| File Upload | S-38, S-43, S-20 | `color.border.strong` dashed, `radius.card` | File 5 MB, nama panjang |
-| Select / Dropdown | S-10, S-09 | `radius.input`, h-52px | 10+ opsi |
-| Table | S-04, S-07, S-14 | `font.mono` untuk kolom angka | 50 baris + pagination |
-| Card | S-03, S-32 | `color.bg.surface`, `radius.card`, `space.24` padding | Nama proyek 79 karakter |
-| Tab Navigation | S-08 | `color.accent` active indicator | 5 tab |
-| Sidebar Navigation | Admin layout | w-280, `color.bg.base`, nav item h-40 `radius.small` | 8 menu item |
-| Bottom Tab Bar | Portal mobile | h-56, `color.bg.base` | 4 tab |
-| App Bar | Portal layout | h-56, back button 44px circle `color.bg.surface-2` | Judul 20 karakter |
-| Modal / Dialog | S-12, S-14, S-25 | `color.bg.overlay` 60%, `radius.card`, max-w-480 (desktop) | Fullscreen di mobile |
-| Toast / Notification | Konfirmasi aksi | `radius.card`, `space.16` padding, auto-dismiss 4s | Teks maks 60 karakter |
-| Empty State | S-03, S-37 | Ikon 48px, `font.body`, `color.text.muted` | — |
-| Loading Skeleton | S-03, S-08 | `color.bg.surface-2` pulse animation | — |
-| Pagination | S-04, S-07, S-14 | h-40, `radius.small` | 5 halaman |
-| Breadcrumb | Admin hierarkis | `font.caption`, `color.text.muted` separator | 3 level |
+| Komponen                                   | Layar utama                  | Token khusus                                                                  | Uji ekstrem                       |
+| ------------------------------------------ | ---------------------------- | ----------------------------------------------------------------------------- | --------------------------------- |
+| Button (Primary, Secondary, Danger, Ghost) | Semua                        | `color.bg.button-primary`, `color.text.button-primary`, `radius.pill`, h-48px | Label maks 24 karakter            |
+| Badge status (9 status proyek + 6 invoice) | S-03, S-07, S-08, S-32, S-37 | Lihat pemetaan status §6, `radius.pill`, `font.badge`, h-26px                 | "Menunggu Verifikasi" 19 karakter |
+| Input Text                                 | Semua form                   | `color.bg.surface`, `color.border.strong`, `radius.input`, h-52px             | Placeholder maks 40 karakter      |
+| Input PIN (6 digit)                        | S-30, S-31, S-34, S-38, S-44 | `font.mono`, tracking 4px                                                     | Semua digit terisi                |
+| Textarea                                   | S-10, S-36, S-40, S-43       | `color.bg.surface`, `radius.input`                                            | 80 karakter (alasan/catatan)      |
+| File Upload                                | S-38, S-43, S-20             | `color.border.strong` dashed, `radius.card`                                   | File 5 MB, nama panjang           |
+| Select / Dropdown                          | S-10, S-09                   | `radius.input`, h-52px                                                        | 10+ opsi                          |
+| Table                                      | S-04, S-07, S-14             | `font.mono` untuk kolom angka                                                 | 50 baris + pagination             |
+| Card                                       | S-03, S-32                   | `color.bg.surface`, `radius.card`, `space.24` padding                         | Nama proyek 79 karakter           |
+| Tab Navigation                             | S-08                         | `color.accent` active indicator                                               | 5 tab                             |
+| Sidebar Navigation                         | Admin layout                 | w-280, `color.bg.base`, nav item h-40 `radius.small`                          | 8 menu item                       |
+| Bottom Tab Bar                             | Portal mobile                | h-56, `color.bg.base`                                                         | 4 tab                             |
+| App Bar                                    | Portal layout                | h-56, back button 44px circle `color.bg.surface-2`                            | Judul 20 karakter                 |
+| Modal / Dialog                             | S-12, S-14, S-25             | `color.bg.overlay` 60%, `radius.card`, max-w-480 (desktop)                    | Fullscreen di mobile              |
+| Toast / Notification                       | Konfirmasi aksi              | `radius.card`, `space.16` padding, auto-dismiss 4s                            | Teks maks 60 karakter             |
+| Empty State                                | S-03, S-37                   | Ikon 48px, `font.body`, `color.text.muted`                                    | —                                 |
+| Loading Skeleton                           | S-03, S-08                   | `color.bg.surface-2` pulse animation                                          | —                                 |
+| Pagination                                 | S-04, S-07, S-14             | h-40, `radius.small`                                                          | 5 halaman                         |
+| Breadcrumb                                 | Admin hierarkis              | `font.caption`, `color.text.muted` separator                                  | 3 level                           |
 
 ---
 
-*Langkah berikutnya: **COMPONENTS.md** — definisikan anatomi, varian, dan state untuk setiap komponen menggunakan token dari DESIGN.md.*
+_Langkah berikutnya: **COMPONENTS.md** — definisikan anatomi, varian, dan state untuk setiap komponen menggunakan token dari DESIGN.md._

@@ -3,6 +3,7 @@
 ## Cara Pakai
 
 File ini terbagi dua bagian:
+
 1. **Fase 0 (Claude Desktop)** — Jalankan skill-skill design pipeline di Claude Desktop (chat biasa) untuk menghasilkan dokumen desain yang akan menjadi panduan UI.
 2. **Fase 1–11 (Claude Code)** — Copy-paste prompt per epic ke terminal Claude Code.
 
@@ -13,6 +14,7 @@ File ini terbagi dua bagian:
 ## Prasyarat
 
 Pastikan sudah terinstal:
+
 - Node.js 22 LTS (`node -v`)
 - npm 9.x (`npm -v`). Install: `npm install -g npm`
 - Git (`git -v`)
@@ -572,6 +574,7 @@ Verify: semua actions compile, Zod schemas validate correctly.
 ## Epic 6 — Admin UI (7 tasks)
 
 > **Referensi Visual WAJIB:** Setiap halaman admin HARUS mengacu pada:
+>
 > 1. File Pencil: `portal-jasa-website.pen` — buka via Pencil app untuk melihat wireframe
 > 2. Screenshot: `docs/design/screens/admin-*.png` (dari Fase 0.5)
 > 3. Design tokens: `docs/design/DESIGN.md`
@@ -697,6 +700,7 @@ Label, placeholder, pesan: semua dari COPY.md.
 ## Epic 7 — Portal UI (5 tasks)
 
 > **Referensi Visual WAJIB:**
+>
 > 1. Screenshots: `docs/design/screens/portal-*.png`
 > 2. Design tokens: `docs/design/DESIGN.md`
 > 3. Teks UI: `docs/design/COPY.md` (section Portal)
@@ -964,20 +968,20 @@ Gunakan agent backend-design:incident-thinker untuk final incident review.
 
 ## Ringkasan Skills & Agents per Epic
 
-| Epic | Skills (Claude Desktop) | Agents (Claude Code) |
-|------|------------------------|---------------------|
-| Fase 0 | `/to-ux`, `/to-copy`, `/to-fixtures`, `/create-design-md` | — |
-| 1. Scaffolding | — | — |
-| 2. Database | — | `schema-reviewer` |
-| 3. Services | — | `component-architect` |
-| 4. Repositories | — | — |
-| 5. Actions | — | — |
-| 6. Admin UI | Pencil MCP (referensi visual) | — |
-| 7. Portal UI | Pencil MCP (referensi visual) | — |
-| 8. Security | — | `security-reviewer` |
-| 9. Files | — | — |
-| 10. Testing | — | `incident-thinker` |
-| 11. Deploy | — | — |
+| Epic            | Skills (Claude Desktop)                                   | Agents (Claude Code)  |
+| --------------- | --------------------------------------------------------- | --------------------- |
+| Fase 0          | `/to-ux`, `/to-copy`, `/to-fixtures`, `/create-design-md` | —                     |
+| 1. Scaffolding  | —                                                         | —                     |
+| 2. Database     | —                                                         | `schema-reviewer`     |
+| 3. Services     | —                                                         | `component-architect` |
+| 4. Repositories | —                                                         | —                     |
+| 5. Actions      | —                                                         | —                     |
+| 6. Admin UI     | Pencil MCP (referensi visual)                             | —                     |
+| 7. Portal UI    | Pencil MCP (referensi visual)                             | —                     |
+| 8. Security     | —                                                         | `security-reviewer`   |
+| 9. Files        | —                                                         | —                     |
+| 10. Testing     | —                                                         | `incident-thinker`    |
+| 11. Deploy      | —                                                         | —                     |
 
 ## File Referensi yang Dihasilkan Fase 0
 

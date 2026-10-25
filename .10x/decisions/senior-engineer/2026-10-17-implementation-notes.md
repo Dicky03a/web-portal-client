@@ -27,6 +27,7 @@ The DB Design document uses Laravel column types. Here's the exact Drizzle mappi
 ```
 
 **Gotcha:** Drizzle's `bigint` mode matters:
+
 - `mode: 'number'` for IDs and small bigints (safe up to 2^53)
 - `mode: 'bigint'` for money (use native BigInt to avoid precision loss)
 
@@ -119,10 +120,7 @@ async function generateInvoiceNumber(tx: Transaction, year: number): Promise<str
   const [seq] = await tx
     .select()
     .from(numberSequences)
-    .where(and(
-      eq(numberSequences.prefix, 'INV'),
-      eq(numberSequences.year, year)
-    ))
+    .where(and(eq(numberSequences.prefix, 'INV'), eq(numberSequences.year, year)))
     .for('update'); // SELECT ... FOR UPDATE
 
   if (!seq) {
@@ -132,9 +130,7 @@ async function generateInvoiceNumber(tx: Transaction, year: number): Promise<str
   }
 
   const next = seq.lastValue + 1;
-  await tx.update(numberSequences)
-    .set({ lastValue: next })
-    .where(eq(numberSequences.id, seq.id));
+  await tx.update(numberSequences).set({ lastValue: next }).where(eq(numberSequences.id, seq.id));
 
   return `INV-${year}-${String(next).padStart(4, '0')}`;
 }
@@ -231,10 +227,7 @@ function onFailedAttempt(link: PortalLink): { shouldLock: boolean } {
 ### 10. File Upload Validation
 
 ```typescript
-const ALLOWED_MIME_TYPES = [
-  'image/jpeg', 'image/png', 'image/webp',
-  'application/pdf',
-];
+const ALLOWED_MIME_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'application/pdf'];
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
 function validateUpload(file: File): Result<void> {

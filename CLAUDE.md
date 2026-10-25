@@ -53,6 +53,7 @@ src/
 ## Reference Documents
 
 All architecture decisions and implementation guides are in `.10x/`:
+
 - Spec: `.10x/specs/2026-10-17-portal-proyek-design.md`
 - Task breakdown: `.10x/decisions/engineering-manager/2026-10-17-mvp-task-breakdown.md`
 - Implementation gotchas: `.10x/decisions/senior-engineer/2026-10-17-implementation-notes.md`

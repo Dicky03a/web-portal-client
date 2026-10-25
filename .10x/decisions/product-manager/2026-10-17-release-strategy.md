@@ -15,6 +15,7 @@
 **Goal:** Replace manual Canva + WhatsApp workflow for quotation → payment tracking.
 
 **Included:**
+
 - Client & project management (CRUD + state machine)
 - Quotation document flow (create, version, send, approve/reject)
 - Billing: installments, invoices, payment recording & verification
@@ -25,6 +26,7 @@
 - File upload/download with signed URLs
 
 **Excluded from MVP:**
+
 - Addendum & BAST documents (table exists but flow deferred)
 - Progress tracking (milestones, updates)
 - Revision request management
@@ -37,6 +39,7 @@
 **Goal:** Solve P3 (progress visibility) and P5 (revision scope creep).
 
 **Additions:**
+
 - Milestones & progress updates (2 tables)
 - Revision requests with quota tracking (1 table)
 - Addendum document flow (scope changes → new quotation)
@@ -48,6 +51,7 @@
 **Goal:** Solve P6 (unclear warranty scope).
 
 **Additions:**
+
 - Warranty claims (1 table)
 - Auto-flag out-of-scope/out-of-period claims
 - Warranty dashboard for admin
@@ -55,18 +59,18 @@
 
 ## Success Criteria (MVP)
 
-| Metric | Target |
-|--------|--------|
-| Quotation creation time | < 15 minutes (vs current ~1 hour in Canva) |
-| Invoice accuracy | 0 numbering duplicates |
-| Payment tracking | All payments recorded in system, not in chat |
-| Client portal adoption | At least 1 real client uses portal to approve quotation |
-| Approval trail | Every approval has: timestamp, version hash, IP, user-agent |
+| Metric                  | Target                                                      |
+| ----------------------- | ----------------------------------------------------------- |
+| Quotation creation time | < 15 minutes (vs current ~1 hour in Canva)                  |
+| Invoice accuracy        | 0 numbering duplicates                                      |
+| Payment tracking        | All payments recorded in system, not in chat                |
+| Client portal adoption  | At least 1 real client uses portal to approve quotation     |
+| Approval trail          | Every approval has: timestamp, version hash, IP, user-agent |
 
 ## Risks
 
-| Risk | Mitigation |
-|------|-----------|
-| MVP scope still too large | Start with happy path only; edge cases in patch releases |
+| Risk                                  | Mitigation                                                 |
+| ------------------------------------- | ---------------------------------------------------------- |
+| MVP scope still too large             | Start with happy path only; edge cases in patch releases   |
 | Client portal too complex for clients | Keep it dead simple: PIN → see project → one-click approve |
-| Iteration 2-3 never built | MVP is useful standalone; iterations are enhancements |
+| Iteration 2-3 never built             | MVP is useful standalone; iterations are enhancements      |

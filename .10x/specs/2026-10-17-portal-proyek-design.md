@@ -19,20 +19,21 @@ The system replaces manual processes (Canva + WhatsApp) with a single source of 
 
 ## 2. Stack Decision
 
-| Layer | Technology | Rationale |
-|-------|-----------|-----------|
-| Framework | Next.js 15 (App Router) | Full-stack monolith with RSC, Server Actions, built-in API routes |
-| Language | TypeScript (strict) | Type safety across client/server boundary |
-| ORM | Drizzle ORM | SQL-first, supports raw SQL migrations for triggers/CHECK/partial indexes |
-| Database | PostgreSQL 18 | Required by DB design: triggers, CHECK constraints, partial unique indexes, INET type |
-| UI | Tailwind CSS + shadcn/ui | Rapid UI development, accessible components, consistent design system |
-| Runtime | Node.js 22 LTS | Required for Next.js 15, ESM support |
-| Deployment | VPS + Docker Compose | Next.js container + PostgreSQL container; shared hosting incompatible |
-| CI/CD | GitHub Actions | Build image → push → deploy to VPS |
+| Layer      | Technology               | Rationale                                                                             |
+| ---------- | ------------------------ | ------------------------------------------------------------------------------------- |
+| Framework  | Next.js 15 (App Router)  | Full-stack monolith with RSC, Server Actions, built-in API routes                     |
+| Language   | TypeScript (strict)      | Type safety across client/server boundary                                             |
+| ORM        | Drizzle ORM              | SQL-first, supports raw SQL migrations for triggers/CHECK/partial indexes             |
+| Database   | PostgreSQL 18            | Required by DB design: triggers, CHECK constraints, partial unique indexes, INET type |
+| UI         | Tailwind CSS + shadcn/ui | Rapid UI development, accessible components, consistent design system                 |
+| Runtime    | Node.js 22 LTS           | Required for Next.js 15, ESM support                                                  |
+| Deployment | VPS + Docker Compose     | Next.js container + PostgreSQL container; shared hosting incompatible                 |
+| CI/CD      | GitHub Actions           | Build image → push → deploy to VPS                                                    |
 
 ### Why Not Laravel (Original PRD Stack)
 
 The PRD specified Laravel 13 + Inertia + React. The switch to full-stack Next.js was decided because:
+
 1. User is shifting to the JS/TS ecosystem for career growth
 2. Single language (TypeScript) across full stack eliminates context switching
 3. React Server Components enable server rendering without separate API layer
@@ -41,6 +42,7 @@ The PRD specified Laravel 13 + Inertia + React. The switch to full-stack Next.js
 ### Why Drizzle Over Prisma
 
 The DB design requires features Prisma cannot handle natively:
+
 - `BEFORE UPDATE` triggers to freeze document versions
 - `BEFORE UPDATE/DELETE` triggers to reject mutations on audit logs
 - Partial unique indexes (e.g., unique active portal link per project)
@@ -155,25 +157,25 @@ Portal UI (Client Component)
 
 ### 4.1 Admin Auth
 
-| Aspect | Implementation |
-|--------|---------------|
-| Login | Email + password (argon2 hash) |
-| 2FA | TOTP (Google Authenticator compatible) |
-| Session | HTTP-only, Secure, SameSite=Lax cookie; 24h expiry |
-| Rate limit | 5 failed attempts → 15 min lockout per IP |
-| Storage | `users` table (single admin row in production) |
+| Aspect     | Implementation                                     |
+| ---------- | -------------------------------------------------- |
+| Login      | Email + password (argon2 hash)                     |
+| 2FA        | TOTP (Google Authenticator compatible)             |
+| Session    | HTTP-only, Secure, SameSite=Lax cookie; 24h expiry |
+| Rate limit | 5 failed attempts → 15 min lockout per IP          |
+| Storage    | `users` table (single admin row in production)     |
 
 ### 4.2 Portal Auth (Client)
 
-| Aspect | Implementation |
-|--------|---------------|
-| Access | Unique token link per project (128-bit random, hashed in DB, encrypted copy for re-sending) |
-| PIN | 6+ digit, argon2 hash, weak PIN rejection (sequences, repeats) |
-| First login | Must change system-generated initial PIN |
-| Session | 30-day HTTP-only cookie tied to portal_link |
-| Re-auth | PIN re-entry required for: document approval, payment proof upload |
-| Brute force | 5 wrong PINs → 15 min lock per token; 3 lockouts → frozen until admin reset |
-| Revocation | PIN change, PIN reset, or link revocation invalidates all active sessions |
+| Aspect      | Implementation                                                                              |
+| ----------- | ------------------------------------------------------------------------------------------- |
+| Access      | Unique token link per project (128-bit random, hashed in DB, encrypted copy for re-sending) |
+| PIN         | 6+ digit, argon2 hash, weak PIN rejection (sequences, repeats)                              |
+| First login | Must change system-generated initial PIN                                                    |
+| Session     | 30-day HTTP-only cookie tied to portal_link                                                 |
+| Re-auth     | PIN re-entry required for: document approval, payment proof upload                          |
+| Brute force | 5 wrong PINs → 15 min lock per token; 3 lockouts → frozen until admin reset                 |
+| Revocation  | PIN change, PIN reset, or link revocation invalidates all active sessions                   |
 
 ### 4.3 Authorization Model
 
@@ -228,13 +230,13 @@ Implementation: `project-lifecycle.service.ts` holds the transition table. Statu
 
 Core business rule: documents are frozen once sent to clients.
 
-| Step | What happens |
-|------|-------------|
-| Admin creates version | Content editable, `sent_at` is null |
-| Admin sends version | `sent_at` set; content serialized as canonical JSON text → SHA-256 hash computed → PDF rendered and stored. DB trigger `BEFORE UPDATE` rejects any change to `content_snapshot`, `content_hash`, or `rendered_pdf_path` once `sent_at` is set. |
-| Client views | Portal serves the frozen snapshot |
-| Client approves | `document_decisions` records: client name, PIN re-auth, timestamp, version ID, `content_hash` (must match version's hash), IP, user-agent |
-| Changes after approval | Must create new document (Addendum) that references the original |
+| Step                   | What happens                                                                                                                                                                                                                                   |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Admin creates version  | Content editable, `sent_at` is null                                                                                                                                                                                                            |
+| Admin sends version    | `sent_at` set; content serialized as canonical JSON text → SHA-256 hash computed → PDF rendered and stored. DB trigger `BEFORE UPDATE` rejects any change to `content_snapshot`, `content_hash`, or `rendered_pdf_path` once `sent_at` is set. |
+| Client views           | Portal serves the frozen snapshot                                                                                                                                                                                                              |
+| Client approves        | `document_decisions` records: client name, PIN re-auth, timestamp, version ID, `content_hash` (must match version's hash), IP, user-agent                                                                                                      |
+| Changes after approval | Must create new document (Addendum) that references the original                                                                                                                                                                               |
 
 Hash verification: `content_hash = SHA-256(content_snapshot)` where `content_snapshot` is the canonical TEXT stored byte-for-byte (not JSONB, which reorders keys).
 
@@ -258,6 +260,7 @@ Hash verification: `content_hash = SHA-256(content_snapshot)` where `content_sna
 ## 9. Release Strategy
 
 ### MVP (18 tables)
+
 - Clients, projects, project lifecycle (9 statuses)
 - Documents: Quotation only (documents, document_versions, document_version_items, document_decisions, document_templates)
 - Billing: installments, invoices, payments, bank_accounts, number_sequences
@@ -267,12 +270,14 @@ Hash verification: `content_hash = SHA-256(content_snapshot)` where `content_sna
 - WhatsApp message generation (wa.me links)
 
 ### Iteration 2 (+3 tables)
+
 - Progress: milestones, progress_updates
 - Revision: revision_requests
 - Documents: Addendum, BAST support
 - Revision quota tracking (calculated, not stored counter)
 
 ### Iteration 3 (+1 table)
+
 - Warranty: warranty_claims
 - Auto-flag out-of-scope/out-of-period claims
 - Warranty period tracking (dates frozen at BAST approval)
@@ -318,17 +323,17 @@ VPS (e.g., IDCloudHost / DigitalOcean)
 
 The DB Design document uses Laravel conventions. Key translations for Drizzle:
 
-| Laravel Convention | Drizzle Equivalent |
-|-------------------|-------------------|
-| `$table->id()` | `bigserial('id').primaryKey()` |
-| `$table->timestampsTz()` | `timestamp('created_at', { withTimezone: true })`, `timestamp('updated_at', ...)` |
-| `$table->foreignId('x')->constrained()` | `bigint('x').references(() => table.id)` |
-| Eloquent `$fillable` / `$casts` | Drizzle `InferInsertModel<T>` + Zod validation |
-| `SoftDeletes` | Manual `cancelled_at` / `archived_at` columns (no soft delete trait) |
-| `encrypted` cast | Node.js `crypto.createCipheriv` with APP_KEY |
-| PHP backed enum | TypeScript `const` enum + Drizzle `varchar` + CHECK constraint in migration SQL |
-| `DB::transaction()` | `db.transaction(async (tx) => { ... })` |
-| Triggers (raw SQL in migration) | Drizzle `sql` tag in migration files (same raw SQL) |
+| Laravel Convention                      | Drizzle Equivalent                                                                |
+| --------------------------------------- | --------------------------------------------------------------------------------- |
+| `$table->id()`                          | `bigserial('id').primaryKey()`                                                    |
+| `$table->timestampsTz()`                | `timestamp('created_at', { withTimezone: true })`, `timestamp('updated_at', ...)` |
+| `$table->foreignId('x')->constrained()` | `bigint('x').references(() => table.id)`                                          |
+| Eloquent `$fillable` / `$casts`         | Drizzle `InferInsertModel<T>` + Zod validation                                    |
+| `SoftDeletes`                           | Manual `cancelled_at` / `archived_at` columns (no soft delete trait)              |
+| `encrypted` cast                        | Node.js `crypto.createCipheriv` with APP_KEY                                      |
+| PHP backed enum                         | TypeScript `const` enum + Drizzle `varchar` + CHECK constraint in migration SQL   |
+| `DB::transaction()`                     | `db.transaction(async (tx) => { ... })`                                           |
+| Triggers (raw SQL in migration)         | Drizzle `sql` tag in migration files (same raw SQL)                               |
 
 ## 13. Open Questions (Carried from PRD)
 

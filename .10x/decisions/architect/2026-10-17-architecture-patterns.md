@@ -7,6 +7,7 @@
 ## Context
 
 A monolithic Next.js application that must:
+
 1. Enforce complex business rules (state machine, immutability, installment math)
 2. Support two distinct UIs (admin dashboard, client portal) with different auth models
 3. Maintain strict data integrity (triggers, constraints, audit logs)
@@ -23,6 +24,7 @@ Route (app/) → Action (server/actions/) → Service (server/services/) → Rep
 **Why not Clean Architecture:** Too many abstractions for a single-developer project. The 4-layer approach (Route → Action → Service → Repository) gives separation of concerns without interface/adapter ceremony.
 
 **Rules:**
+
 - Routes ONLY call Actions
 - Actions orchestrate Services and Repositories
 - Services contain pure business logic (no DB, no framework)
@@ -32,6 +34,7 @@ Route (app/) → Action (server/actions/) → Service (server/services/) → Rep
 ### 2. Server Actions as Primary Entry Point
 
 All mutations go through Server Actions (not API routes). Benefits:
+
 - Built-in CSRF protection
 - Type-safe client-server boundary
 - No need to build/maintain REST endpoints
@@ -55,12 +58,14 @@ Each route group has its own `layout.tsx` with auth guards. No shared auth state
 The project lifecycle state machine lives in `project-lifecycle.service.ts` as a pure function:
 
 ```typescript
-type TransitionResult = { success: true; newStatus: ProjectStatus } | { success: false; reason: string };
+type TransitionResult =
+  { success: true; newStatus: ProjectStatus } | { success: false; reason: string };
 
 function transition(currentStatus: ProjectStatus, action: ProjectAction): TransitionResult;
 ```
 
 This is NOT a library/framework. It's a lookup table + validation function. Benefits:
+
 - Testable without DB
 - Single source of truth for valid transitions
 - Easy to visualize and audit
@@ -91,12 +96,12 @@ This ensures all-or-nothing semantics for complex multi-table operations.
 
 ### 6. Validation Strategy
 
-| Layer | Tool | What |
-|-------|------|------|
-| Client | React Hook Form + Zod | UX feedback, prevent obviously bad input |
-| Action | Zod (same schema) | Server-side re-validation, never trust client |
-| Service | TypeScript types + assertions | Business rule validation (state transitions, quota checks) |
-| Database | CHECK, UNIQUE, FK, triggers | Last line of defense, data integrity guarantee |
+| Layer    | Tool                          | What                                                       |
+| -------- | ----------------------------- | ---------------------------------------------------------- |
+| Client   | React Hook Form + Zod         | UX feedback, prevent obviously bad input                   |
+| Action   | Zod (same schema)             | Server-side re-validation, never trust client              |
+| Service  | TypeScript types + assertions | Business rule validation (state transitions, quota checks) |
+| Database | CHECK, UNIQUE, FK, triggers   | Last line of defense, data integrity guarantee             |
 
 Zod schemas are defined once in `types/` and shared between client and server.
 
@@ -110,6 +115,7 @@ Zod schemas are defined once in `types/` and shared between client and server.
 ### 8. No Premature Abstractions
 
 Explicitly NOT doing (for now):
+
 - Event sourcing (overkill for single-user admin)
 - Message queues (no async processing needed yet)
 - Microservices (single deployment unit)
@@ -121,9 +127,9 @@ These can be added in future iterations if needed.
 
 ## Trade-offs
 
-| Decision | Pro | Con |
-|----------|-----|-----|
-| Monolith | Simple deployment, easy refactoring | Harder to scale horizontally (irrelevant for single-user) |
-| Server Actions over REST | Less boilerplate, CSRF-free | Harder to test without framework, no API for mobile |
-| Drizzle over Prisma | Full SQL control | Smaller community, fewer tutorials |
-| No Redis | One less service to manage | Session queries hit DB (acceptable at this scale) |
+| Decision                 | Pro                                 | Con                                                       |
+| ------------------------ | ----------------------------------- | --------------------------------------------------------- |
+| Monolith                 | Simple deployment, easy refactoring | Harder to scale horizontally (irrelevant for single-user) |
+| Server Actions over REST | Less boilerplate, CSRF-free         | Harder to test without framework, no API for mobile       |
+| Drizzle over Prisma      | Full SQL control                    | Smaller community, fewer tutorials                        |
+| No Redis                 | One less service to manage          | Session queries hit DB (acceptable at this scale)         |

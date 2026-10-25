@@ -19,6 +19,7 @@ Architecture brainstorming complete. All Phase 0–2 decisions documented:
 **Phase 3: Task Breakdown for MVP Implementation**
 
 The Engineering Manager and Senior Engineer should produce:
+
 1. An ordered task list for building the MVP
 2. Each task should be independently testable
 3. Tasks should follow this build order:

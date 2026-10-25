@@ -33,31 +33,32 @@ Define coding standards, conventions, and implementation patterns for a solo-dev
 
 ### 2. Naming Conventions
 
-| Entity | Convention | Example |
-|--------|-----------|---------|
-| Files | kebab-case | `project-lifecycle.service.ts` |
-| Components | PascalCase file + export | `ProjectCard.tsx` |
-| Functions | camelCase | `calculateInstallments()` |
-| Types/Interfaces | PascalCase | `ProjectStatus`, `DocumentVersion` |
-| Constants | SCREAMING_SNAKE_CASE | `MAX_PIN_ATTEMPTS` |
-| DB columns | snake_case | `content_hash`, `sent_at` |
-| DB tables | snake_case plural | `document_versions` |
-| Env vars | SCREAMING_SNAKE_CASE | `DATABASE_URL` |
-| Server Actions | verbNoun | `approveDocument`, `createProject` |
-| Services | domain.service.ts | `billing.service.ts` |
-| Repositories | domain.repository.ts | `billing.repository.ts` |
+| Entity           | Convention               | Example                            |
+| ---------------- | ------------------------ | ---------------------------------- |
+| Files            | kebab-case               | `project-lifecycle.service.ts`     |
+| Components       | PascalCase file + export | `ProjectCard.tsx`                  |
+| Functions        | camelCase                | `calculateInstallments()`          |
+| Types/Interfaces | PascalCase               | `ProjectStatus`, `DocumentVersion` |
+| Constants        | SCREAMING_SNAKE_CASE     | `MAX_PIN_ATTEMPTS`                 |
+| DB columns       | snake_case               | `content_hash`, `sent_at`          |
+| DB tables        | snake_case plural        | `document_versions`                |
+| Env vars         | SCREAMING_SNAKE_CASE     | `DATABASE_URL`                     |
+| Server Actions   | verbNoun                 | `approveDocument`, `createProject` |
+| Services         | domain.service.ts        | `billing.service.ts`               |
+| Repositories     | domain.repository.ts     | `billing.repository.ts`            |
 
 ### 3. Result Type Pattern
 
 Services return typed results instead of throwing exceptions:
 
 ```typescript
-type Result<T, E = string> = 
-  | { ok: true; data: T }
-  | { ok: false; error: E };
+type Result<T, E = string> = { ok: true; data: T } | { ok: false; error: E };
 
 // Usage in service
-function transition(current: ProjectStatus, action: ProjectAction): Result<ProjectStatus, TransitionError> {
+function transition(
+  current: ProjectStatus,
+  action: ProjectAction,
+): Result<ProjectStatus, TransitionError> {
   const allowed = TRANSITIONS[current];
   if (!allowed?.includes(action)) {
     return { ok: false, error: { code: 'INVALID_TRANSITION', current, action } };
@@ -79,7 +80,7 @@ function calculateInstallmentAmount(total: bigint, basisPoints: number): bigint 
 
 // Rounding: remainder goes to last installment
 function distributeInstallments(total: bigint, percentages: number[]): bigint[] {
-  const amounts = percentages.map(p => calculateInstallmentAmount(total, p));
+  const amounts = percentages.map((p) => calculateInstallmentAmount(total, p));
   const sum = amounts.reduce((a, b) => a + b, 0n);
   const remainder = total - sum;
   amounts[amounts.length - 1] += remainder;
@@ -134,6 +135,7 @@ export async function createDocument(input: unknown) {
 ### 7. Migration Standards
 
 Migrations are hand-written SQL (not auto-generated) to support:
+
 - Triggers
 - CHECK constraints with conditions
 - Partial unique indexes
@@ -151,7 +153,7 @@ CREATE TABLE projects (
   -- ... other columns
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  
+
   CONSTRAINT projects_code_unique UNIQUE (code),
   CONSTRAINT projects_status_check CHECK (
     status IN ('draft','quotation_sent','awaiting_down_payment','in_progress',
@@ -171,18 +173,22 @@ COMMENT ON TABLE projects IS 'Core state machine entity. Status transitions enfo
 
 ### 8. Testing Strategy
 
-| Level | Tool | What to test |
-|-------|------|-------------|
-| Unit | Vitest | Services (pure logic): state machine transitions, installment calc, hash verification |
-| Integration | Vitest + test DB | Repositories: query correctness, transaction behavior, trigger enforcement |
-| E2E | Playwright | Critical flows: login, create project, approve quotation, record payment |
+| Level       | Tool             | What to test                                                                          |
+| ----------- | ---------------- | ------------------------------------------------------------------------------------- |
+| Unit        | Vitest           | Services (pure logic): state machine transitions, installment calc, hash verification |
+| Integration | Vitest + test DB | Repositories: query correctness, transaction behavior, trigger enforcement            |
+| E2E         | Playwright       | Critical flows: login, create project, approve quotation, record payment              |
 
 **Test naming:** `describe('when [context]', () => it('should [expected behavior]'))`
 
 **Factories:** Create test data builders for each entity:
+
 ```typescript
 const project = await ProjectFactory.create({ status: 'quotation_sent' });
-const version = await DocumentVersionFactory.create({ documentId: project.documentId, sentAt: new Date() });
+const version = await DocumentVersionFactory.create({
+  documentId: project.documentId,
+  sentAt: new Date(),
+});
 ```
 
 ### 9. Environment Variables

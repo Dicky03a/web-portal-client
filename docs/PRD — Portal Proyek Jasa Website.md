@@ -23,14 +23,14 @@ Sebagai penyedia jasa pembuatan website, saya mengelola seluruh siklus proyek (k
 
 Dari sisi klien, mereka harus bertanya untuk tahu progres, tidak punya satu tempat untuk melihat biaya dan tagihan, dan tidak tahu pasti hak revisi maupun garansinya.
 
-| Kode | Masalah | Dampak utama |
-| --- | --- | --- |
-| P1 | Invoice dibuat manual di Canva, tidak terhubung ke proyek | Salah hitung, nomor ganda, rekap sulit |
-| P2 | Persetujuan Penawaran/SPK dan BAST lewat tukar file | Tidak ada versi resmi dan bukti persetujuan |
-| P3 | Progres dikirim lewat chat | Klien bertanya berulang, kesan kurang profesional |
-| P4 | Status pembayaran hanya di chat dan mutasi rekening | Lupa menagih, arus kas tidak terpantau |
-| P5 | Batas revisi tidak tertulis | Scope creep, rawan sengketa |
-| P6 | Masa dan cakupan garansi tidak jelas | Klaim tanpa batas atau klien tidak tahu haknya |
+| Kode | Masalah                                                   | Dampak utama                                      |
+| ---- | --------------------------------------------------------- | ------------------------------------------------- |
+| P1   | Invoice dibuat manual di Canva, tidak terhubung ke proyek | Salah hitung, nomor ganda, rekap sulit            |
+| P2   | Persetujuan Penawaran/SPK dan BAST lewat tukar file       | Tidak ada versi resmi dan bukti persetujuan       |
+| P3   | Progres dikirim lewat chat                                | Klien bertanya berulang, kesan kurang profesional |
+| P4   | Status pembayaran hanya di chat dan mutasi rekening       | Lupa menagih, arus kas tidak terpantau            |
+| P5   | Batas revisi tidak tertulis                               | Scope creep, rawan sengketa                       |
+| P6   | Masa dan cakupan garansi tidak jelas                      | Klaim tanpa batas atau klien tidak tahu haknya    |
 
 Akar masalahnya tiga: tidak ada single source of truth, aturan bisnis tidak tertulis, dan persetujuan tidak punya jejak yang bisa diverifikasi.
 
@@ -152,19 +152,18 @@ Proyek dimodelkan sebagai state machine; setiap modul lain hanya boleh mengubah 
 
 Status pembayaran pelunasan disimpan di invoice, bukan di status proyek: garansi sudah berjalan sejak BAST disetujui, sementara proyek baru "Selesai" setelah garansi berakhir dan semua invoice lunas.
 
-
 **Modul**
 
-| Modul | Tanggung jawab | Antarmuka utama (perilaku) |
-| --- | --- | --- |
-| Lifecycle Proyek | Status proyek dan transisinya | transisi(proyek, aksi) menolak aksi yang tidak sah dari status saat ini |
-| Dokumen & Persetujuan | Penawaran, Addendum, BAST: versi, snapshot, kunci, persetujuan | terbitkanVersi, setujui(versi, bukti), tolak(versi, catatan) |
-| Penagihan | Termin, invoice, penomoran, pembayaran, verifikasi | jadwalkanTermin, terbitkanInvoice, catatPembayaran, verifikasi |
-| Progres | Milestone dan pembaruan bertanggal | tambahPembaruan, tandaiMilestoneSelesai |
-| Revisi & Garansi | Kuota revisi, klasifikasi permintaan, klaim garansi | ajukanPermintaan, klasifikasikan, ajukanKlaim |
-| Akses Portal | Tautan klien, PIN, sesi, pencabutan | buatTautan, cabut, verifikasiPin, gantiPin, resetPin |
-| Notifikasi WhatsApp | Menyusun teks pesan dan tautan wa.me (tanpa API) | pesanUntuk(peristiwa) |
-| Log Aktivitas | Jejak audit append-only | catat(aktor, aksi, objek) |
+| Modul                 | Tanggung jawab                                                 | Antarmuka utama (perilaku)                                              |
+| --------------------- | -------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| Lifecycle Proyek      | Status proyek dan transisinya                                  | transisi(proyek, aksi) menolak aksi yang tidak sah dari status saat ini |
+| Dokumen & Persetujuan | Penawaran, Addendum, BAST: versi, snapshot, kunci, persetujuan | terbitkanVersi, setujui(versi, bukti), tolak(versi, catatan)            |
+| Penagihan             | Termin, invoice, penomoran, pembayaran, verifikasi             | jadwalkanTermin, terbitkanInvoice, catatPembayaran, verifikasi          |
+| Progres               | Milestone dan pembaruan bertanggal                             | tambahPembaruan, tandaiMilestoneSelesai                                 |
+| Revisi & Garansi      | Kuota revisi, klasifikasi permintaan, klaim garansi            | ajukanPermintaan, klasifikasikan, ajukanKlaim                           |
+| Akses Portal          | Tautan klien, PIN, sesi, pencabutan                            | buatTautan, cabut, verifikasiPin, gantiPin, resetPin                    |
+| Notifikasi WhatsApp   | Menyusun teks pesan dan tautan wa.me (tanpa API)               | pesanUntuk(peristiwa)                                                   |
+| Log Aktivitas         | Jejak audit append-only                                        | catat(aktor, aksi, objek)                                               |
 
 **Aturan bisnis yang dikunci**
 
@@ -196,7 +195,6 @@ Status pembayaran pelunasan disimpan di invoice, bukan di status proyek: garansi
 
 Klien, Proyek, Dokumen (jenis: Penawaran/Addendum/BAST), VersiDokumen, Persetujuan, Termin, Invoice, Pembayaran, Milestone, PembaruanProgres, PermintaanRevisi, KlaimGaransi, TautanPortal, SesiPortal, Berkas, LogAktivitas. Rincian 22 tabel, kolom, dan constraint ada di [Desain Basis Data — Portal Proyek Jasa Website](https://claude.ai/code/artifact/5cd50b72-1239-4215-86c5-4129ff35870d) dan gambar ERD v2 di [papan FigJam Portal Proyek](https://www.figma.com/board/dCR3xUrw1hIZHo6yevidA8).
 
-
 **Apa itu tes yang baik di proyek ini**
 
 - Menguji perilaku eksternal: "klien dengan kuota revisi 0 tidak bisa mengajukan revisi", bukan "method X memanggil method Y".
@@ -206,14 +204,14 @@ Klien, Proyek, Dokumen (jenis: Penawaran/Addendum/BAST), VersiDokumen, Persetuju
 
 **Seam dan cakupan**
 
-| Seam | Modul | Contoh skenario wajib |
-| --- | --- | --- |
-| HTTP (feature test) | Semua alur portal klien dan dasbor admin | Klien wajib mengganti PIN awal; persetujuan tanpa PIN ulang ditolak; 5 PIN salah mengunci tautan; tautan yang dicabut ditolak; token proyek A tidak bisa membuka invoice proyek B |
-| Domain (unit test tanpa HTTP) | Lifecycle Proyek | Setiap transisi sah berhasil, setiap transisi tidak sah ditolak (tabel transisi lengkap) |
-| Domain | Penagihan: kalkulasi termin | Jumlah termin selalu sama dengan total, termasuk kasus pembulatan seperti 3 termin dari Rp1.000.000 |
-| Database (integration) | Penagihan: penomoran | Dua penerbitan invoice bersamaan menghasilkan dua nomor berbeda, tanpa celah ganda |
-| Domain | Dokumen & Persetujuan | Versi yang sudah dikirim tidak bisa diubah; hash data kanonik sama dengan hash yang dicatat saat persetujuan; PDF yang diunduh adalah berkas yang dibekukan saat dikirim |
-| Domain | Revisi & Garansi | Kuota berkurang hanya untuk "revisi"; klaim di luar masa garansi tertandai |
+| Seam                          | Modul                                    | Contoh skenario wajib                                                                                                                                                             |
+| ----------------------------- | ---------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| HTTP (feature test)           | Semua alur portal klien dan dasbor admin | Klien wajib mengganti PIN awal; persetujuan tanpa PIN ulang ditolak; 5 PIN salah mengunci tautan; tautan yang dicabut ditolak; token proyek A tidak bisa membuka invoice proyek B |
+| Domain (unit test tanpa HTTP) | Lifecycle Proyek                         | Setiap transisi sah berhasil, setiap transisi tidak sah ditolak (tabel transisi lengkap)                                                                                          |
+| Domain                        | Penagihan: kalkulasi termin              | Jumlah termin selalu sama dengan total, termasuk kasus pembulatan seperti 3 termin dari Rp1.000.000                                                                               |
+| Database (integration)        | Penagihan: penomoran                     | Dua penerbitan invoice bersamaan menghasilkan dua nomor berbeda, tanpa celah ganda                                                                                                |
+| Domain                        | Dokumen & Persetujuan                    | Versi yang sudah dikirim tidak bisa diubah; hash data kanonik sama dengan hash yang dicatat saat persetujuan; PDF yang diunduh adalah berkas yang dibekukan saat dikirim          |
+| Domain                        | Revisi & Garansi                         | Kuota berkurang hanya untuk "revisi"; klaim di luar masa garansi tertandai                                                                                                        |
 
 Prior art: belum ada codebase, jadi pola tes ditetapkan di sini. Gunakan factory ( Tack Stack nya telah di rubah ke Next.Js )l untuk menyusun data proyek per status, supaya setiap tes bisa mulai dari "proyek yang BAST-nya sudah disetujui" dalam satu baris.
 
@@ -241,13 +239,11 @@ Prior art: belum ada codebase, jadi pola tes ditetapkan di sini. Gunakan factory
 
 **Risiko**
 
-| Risiko | Akibat | Mitigasi |
-| --- | --- | --- |
-| Klien enggan memakai portal dan tetap membalas di chat | Data kembali tersebar | Tautan satu klik dari WhatsApp, tanpa akun, tampilan ringan di ponsel |
-| Tautan portal diteruskan ke orang lain | Pihak lain melihat tagihan | PIN untuk membuka portal, PIN ulang untuk tindakan penting, tautan bisa dicabut |
-| Tautan dan PIN awal bocor sebelum klien masuk pertama kali | Orang lain mengganti PIN duluan | PIN awal dikirim terpisah dari tautan; klien yang tidak bisa masuk segera minta reset, yang mencabut semua sesi |
-| Klien lupa PIN | Klien tidak bisa masuk | Reset oleh admin: PIN awal baru dan semua sesi dicabut |
-| Kekuatan hukum persetujuan elektronik biasa dipertanyakan | Bukti lemah saat sengketa | Jejak lengkap + hash snapshot + PIN yang hanya diketahui klien; untuk proyek bernilai besar, tetap bisa disertai tanda tangan basah |
-| Lingkup melebar (scope creep di proyek sendiri) | Tidak selesai tepat waktu | MVP = Penawaran, persetujuan, termin/invoice, pembayaran; progres, revisi, garansi di iterasi kedua |
-
-
+| Risiko                                                     | Akibat                          | Mitigasi                                                                                                                            |
+| ---------------------------------------------------------- | ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Klien enggan memakai portal dan tetap membalas di chat     | Data kembali tersebar           | Tautan satu klik dari WhatsApp, tanpa akun, tampilan ringan di ponsel                                                               |
+| Tautan portal diteruskan ke orang lain                     | Pihak lain melihat tagihan      | PIN untuk membuka portal, PIN ulang untuk tindakan penting, tautan bisa dicabut                                                     |
+| Tautan dan PIN awal bocor sebelum klien masuk pertama kali | Orang lain mengganti PIN duluan | PIN awal dikirim terpisah dari tautan; klien yang tidak bisa masuk segera minta reset, yang mencabut semua sesi                     |
+| Klien lupa PIN                                             | Klien tidak bisa masuk          | Reset oleh admin: PIN awal baru dan semua sesi dicabut                                                                              |
+| Kekuatan hukum persetujuan elektronik biasa dipertanyakan  | Bukti lemah saat sengketa       | Jejak lengkap + hash snapshot + PIN yang hanya diketahui klien; untuk proyek bernilai besar, tetap bisa disertai tanda tangan basah |
+| Lingkup melebar (scope creep di proyek sendiri)            | Tidak selesai tepat waktu       | MVP = Penawaran, persetujuan, termin/invoice, pembayaran; progres, revisi, garansi di iterasi kedua                                 |

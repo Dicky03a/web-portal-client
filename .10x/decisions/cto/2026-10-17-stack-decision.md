@@ -7,6 +7,7 @@
 ## Context
 
 Portal Proyek Jasa Website needs a full-stack web framework with:
+
 - Server-side rendering for SEO (portal pages)
 - Server Actions for form handling without building REST APIs
 - PostgreSQL 18 support with raw SQL for triggers, CHECK constraints, partial indexes
@@ -19,18 +20,18 @@ Portal Proyek Jasa Website needs a full-stack web framework with:
 
 ### Stack Details
 
-| Component | Choice | Version |
-|-----------|--------|---------|
-| Framework | Next.js | 15.x (App Router) |
-| Language | TypeScript | 5.x (strict mode) |
-| ORM | Drizzle ORM | Latest |
-| Database | PostgreSQL | 18 |
-| UI Library | shadcn/ui | Latest |
-| CSS | Tailwind CSS | 4.x |
-| Runtime | Node.js | 22 LTS |
-| Package Manager | npm | 9.x |
-| Deployment | Docker Compose | VPS |
-| CI/CD | GitHub Actions | — |
+| Component       | Choice         | Version           |
+| --------------- | -------------- | ----------------- |
+| Framework       | Next.js        | 15.x (App Router) |
+| Language        | TypeScript     | 5.x (strict mode) |
+| ORM             | Drizzle ORM    | Latest            |
+| Database        | PostgreSQL     | 18                |
+| UI Library      | shadcn/ui      | Latest            |
+| CSS             | Tailwind CSS   | 4.x               |
+| Runtime         | Node.js        | 22 LTS            |
+| Package Manager | npm            | 9.x               |
+| Deployment      | Docker Compose | VPS               |
+| CI/CD           | GitHub Actions | —                 |
 
 ### Rejected Alternatives
 
@@ -52,6 +53,7 @@ Portal Proyek Jasa Website needs a full-stack web framework with:
 ### Why Drizzle Over Prisma
 
 The DB design document requires:
+
 - `BEFORE UPDATE` triggers (freeze document versions, protect audit logs)
 - Partial unique indexes (`UNIQUE WHERE condition`)
 - CHECK constraints with cross-column logic
@@ -62,6 +64,7 @@ Prisma cannot express these in its schema DSL. Drizzle's approach of "schema for
 ## Deployment: VPS + Docker
 
 **Shared hosting was rejected** because:
+
 - No Node.js runtime support
 - No PostgreSQL 18 (most offer MySQL 5.7/8.0)
 - No trigger/function privileges
@@ -69,15 +72,16 @@ Prisma cannot express these in its schema DSL. Drizzle's approach of "schema for
 - No Docker support
 
 **VPS recommendations (IDR pricing):**
+
 - IDCloudHost: ~Rp50.000-100.000/bulan (1-2 vCPU, 1-2GB RAM)
 - DigitalOcean: $6-12/month (1-2 vCPU, 1-2GB RAM)
 - Hetzner: €3.79-5.39/month (best price/performance)
 
 ## Risks
 
-| Risk | Mitigation |
-|------|-----------|
-| Next.js App Router still evolving | Pin to Next.js 15.x, avoid experimental features |
-| Drizzle younger than Prisma | DB schema is well-documented, migration SQL is hand-written anyway |
-| VPS requires server management | Docker Compose + GitHub Actions automate most of it |
-| Single point of failure (one VPS) | Acceptable for freelancer tool; add backup/monitoring later |
+| Risk                              | Mitigation                                                         |
+| --------------------------------- | ------------------------------------------------------------------ |
+| Next.js App Router still evolving | Pin to Next.js 15.x, avoid experimental features                   |
+| Drizzle younger than Prisma       | DB schema is well-documented, migration SQL is hand-written anyway |
+| VPS requires server management    | Docker Compose + GitHub Actions automate most of it                |
+| Single point of failure (one VPS) | Acceptable for freelancer tool; add backup/monitoring later        |
