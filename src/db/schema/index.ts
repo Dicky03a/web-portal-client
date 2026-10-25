@@ -4,3 +4,4 @@
 export * from './portal';
 export * from './project';
 export * from './document';
+export * from './billing';
